@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.title.adjudication.index' | trans }}{% endblock %}
+
+{% block body %}
+	<main class="container-fluid">
+        {{ include('adjudication/_searchForm.html.twig') }}
+        <div id="content" class="container-fluid" {{ stimulus_controller('table', 
+                    { 'url': path('adjudication_index'),
+                    'exportName': 'adjudication',
+                })}} data-action="entity:success->table#refreshContent" data-table-target="content">
+                {{ include('adjudication/_list.html.twig', { 
+                    'adjudications': adjudications,
+                    'pageSize' : pageSize,
+                    'page': page,
+                    'sortName': sortName,
+                    'sortOrder': sortOrder,
+                }) }}
+        </div>
+	</main>
+{% endblock %}

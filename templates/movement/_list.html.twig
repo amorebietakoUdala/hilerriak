@@ -1,0 +1,72 @@
+{% if movements is defined and movements|length > 0 %}
+<div  {{ stimulus_controller('entity', {
+         'entitySaveUrl': path('movement_new'),
+		})}}>
+<table class="table"
+   data-toggle="table"
+   data-table-target="table"
+   data-page-number="{{ page }}" 
+   data-page-size="{{ pageSize }}"
+   data-page-sortName="{{ sortName }}"
+   data-page-sortOrder="{{ sortOrder }}">
+   <thead>
+      <tr>
+         <th data-sortable="true">{{ 'Id' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.type' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.source' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.destination' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.expedientNumber' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.registrationNumber' | trans }}</th>
+         <th data-sortable="true">{{ 'list.deceaseDate' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.defunctFullname' | trans }}</th>
+         <th data-sortable="true">{{ 'movement.finalized' | trans }}</th>
+         <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for movement in movements %}
+         <tr>
+               <td>{{ movement.id }}</td>
+               <td>{{ movement.type.description(app.request.locale) }}</td>
+               <td>
+                  {% if movement.source != null %}
+                     {{ "#{movement.source}-#{movement.source.cemetery.name}" }}
+                  {% endif %}
+               </td>
+               <td>
+                  {% if movement.destination != null %}
+                     {{ "#{movement.destination}-#{movement.destination.cemetery.name}" }}
+                  {% endif %}
+               </td>
+               <td>{{ movement.expedientNumber }}</td>
+               <td>{{ movement.registrationNumber }}</td>
+               <td>{{ movement.deceaseDate | date('Y-m-d') }}</td>
+               <td>{{ movement.defunctFullName }}</td>
+               <td>{{ movement.finalized ? 'label.yes' | trans : 'label.no' | trans }}</td>
+               <td>
+                  <a href="{{ path('movement_show', {'movement': movement.id}) }}" data-action="table#click">
+                     <i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('movement_edit', {'movement': movement.id}) }}" data-action="table#click">
+                     <i class="fa fa-edit" title='{{ "btn.edit" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('movement_delete', {'movement': movement.id}) }}" 
+                     data-action="click->entity#delete" 
+                     data-token="{{ csrf_token('delete' ~ movement.id) }}">
+                     <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+               </td>
+         </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{% else %}
+   <div class="alert alert-secondary mt-3" role="alert">{{"messages.results0" | trans }}</div>
+{% endif %}
+<span class="pull-right">
+   <a href="{{ path('movement_new') }}" class="btn btn-primary rounded-circle fixed-bottom-right z-index-100">
+      <i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i>
+   </a>
+</span>
+{{ include('common/_alert.html.twig') }}
+</div>

@@ -1,0 +1,14 @@
+[14-Apr-2023 10:03:49 Europe/Berlin] PHP Warning:  Uncaught ReflectionException: Class "Doctrine\Common\Persistence\ObjectManager" not found while loading "App\DataFixtures\AppFixtures". in /var/www/SF5/hilerriak/vendor/symfony/config/Resource/ClassExistenceResource.php:175
+Stack trace:
+#0 [internal function]: Symfony\Component\Config\Resource\ClassExistenceResource::throwOnRequiredClass()
+#1 /var/www/SF5/hilerriak/src/DataFixtures/AppFixtures.php(8): spl_autoload_call()
+#2 /var/www/SF5/hilerriak/vendor/symfony/error-handler/DebugClassLoader.php(289): include('/var/www/SF5/hi...')
+#3 [internal function]: Symfony\Component\ErrorHandler\DebugClassLoader->loadClass()
+#4 [internal function]: spl_autoload_call()
+#5 /var/www/SF5/hilerriak/vendor/symfony/config/Resource/ClassExistenceResource.php(78): class_exists()
+#6 /var/www/SF5/hilerriak/vendor/symfony/dependency-injection/ContainerBuilder.php(370): Symfony\Component\Config\Resource\ClassExistenceResource->isFresh()
+#7 /var/www/SF5/hilerriak/vendor/symfony/dependency-injection/Loader/FileLoader.php(217): Symfony in /var/www/SF5/hilerriak/vendor/symfony/config/Resource/ClassExistenceResource.php on line 175
+[14-Apr-2023 10:03:49 Europe/Berlin] PHP Fatal error:  Could not check compatibility between App\DataFixtures\AppFixtures::load(Doctrine\Common\Persistence\ObjectManager $manager) and Doctrine\Common\DataFixtures\FixtureInterface::load(Doctrine\Persistence\ObjectManager $manager), because class Doctrine\Common\Persistence\ObjectManager is not available in /var/www/SF5/hilerriak/src/DataFixtures/AppFixtures.php on line 10
+[14-Apr-2023 13:09:49 Europe/Berlin] 2023-04-14T13:09:49+02:00 [critical] Uncaught Error: syntax error, unexpected '<', expecting end of file
+[19-Apr-2023 14:05:17 Europe/Berlin] 2023-04-19T14:05:17+02:00 [critical] Uncaught Error: syntax error, unexpected ',', expecting ')'
+[24-Apr-2023 09:11:06 Europe/Berlin] PHP Fatal error:  Type declaration 'int' must be unqualified in /var/www/SF5/hilerriak/src/Entity/Adjudication.php on line 80

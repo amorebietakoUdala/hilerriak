@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if readonly %}
+        {{ 'app.title.movement.show' | trans }}
+    {% elseif new %}
+        {{ 'app.title.movement.new' | trans }}
+    {% else %}
+        {{ 'app.title.movement.edit' | trans }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <main class="container-fluid">
+        <div class="mt-2">
+            {{ include('movement/_form.html.twig',{
+                'readonly': readonly,
+                'new': new,
+            }) }}
+        </div>
+    </main>
+{% endblock body %}

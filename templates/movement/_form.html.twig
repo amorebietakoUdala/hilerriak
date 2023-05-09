@@ -1,0 +1,76 @@
+
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form) }}
+    <div class="row align-items-center mb-1" {{ stimulus_controller('movement-form',{
+        'locale': app.request.locale,
+        'destinationTypeGrave': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_GRAVE')
+    })}}>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.type, { 'attr': 
+                { 'class' : 'form-select form-select-sm' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.source, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-form-target': 'sourceInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.destinationType, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-form-target': 'destinationTypeInput', 'data-action': 'movement-form#onDestinationTypeChange' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6 {{ form.destinationType.vars.value != "1" ? 'd-none' : '' }}" data-movement-form-target="destinationRow">
+            {{ form_row(form.destination, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-form-target': 'destinationInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.expedientNumber, { 'attr': 
+                { 'class' : 'form-control form-control-sm' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.registrationNumber, { 'attr': 
+                { 'class' : 'form-control form-control-sm' }
+            }) }}
+        </div>
+    </div>
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctName, { 'attr': 
+                { 'class' : 'form-control form-control-sm' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctSurname1, { 'attr': 
+                { 'class' : 'form-control form-control-sm' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctSurname2, { 'attr': 
+                { 'class' : 'form-control form-control-sm' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.deceaseDate, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd' }
+            }) }}
+        </div>
+        {% if not new %}
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.finalized) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-6 col-md-2 col-sm-6">
+            {{ form_row(form.note, { 'attr' : { 'rows': '4'}}) }}
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">{{ 'btn.save' | trans }}</button>
+    <a class="btn btn-secondary" id="modal-cancel-button" href="{{ returnUrl is defined and not returnUrl is empty ? returnUrl : path('movement_index') }}">{{ 'btn.cancel' | trans }}</a>
+{{ form_end(form) }}

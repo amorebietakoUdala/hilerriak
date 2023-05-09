@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if readonly %}
+        {{ 'app.title.owner.show' | trans }}
+    {% elseif new %}
+        {{ 'app.title.owner.new' | trans }}
+    {% else %}
+        {{ 'app.title.owner.edit' | trans }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <main class="container-fluid">
+        <div class="mt-2">
+            {{ include('owner/_form.html.twig',{
+                'readonly': readonly,
+                'new': new,
+            }) }}
+        </div>
+    </main>
+{% endblock body %}

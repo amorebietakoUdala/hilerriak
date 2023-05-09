@@ -1,0 +1,9 @@
+*.cnf
+*.tar.gz
+*.mdb
+export-hilerriak.sql
+truncate-hilerriak.sql
+adaptation.sql
+export-hilerriak.mdb.sql
+export-hilerriak2.mdb.sql
+*.bak

@@ -1,0 +1,26 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+      <b>{{ 'id' | trans }}:</b> {{ adjudication.id }}<br>
+      <b>{{ 'mail.decreeDate' | trans }}:</b> {{ adjudication.decreeDate | date('Y-m-d') }}<br>
+      <b>{{ 'mail.expiryYear' | trans }}:</b> {{ adjudication.expiryYear }}<br>
+      <b>{{ 'adjudication.renewed' | trans }}:</b> {{ adjudication.renewed ? 'label.yes' | trans : 'label.no' | trans }}<br>
+      <b>{{ 'adjudication.expedientNumber' | trans }}:</b> {{ adjudication.expedientNumber }}<br>
+      <b>{{ 'adjudication.registrationNumber' | trans }}:</b> {{ adjudication.registrationNumber }}<br>
+      <b>{{ 'adjudication.current' | trans }}:</b> {{ adjudication.current ? 'label.yes' | trans : 'label.no' | trans }}<br>
+      <b>{{ 'adjudication.owner' | trans }}:</b> {{ adjudication.owner.fullName }}<br>
+      <b>{{ 'adjudication.grave' | trans }}:</b> {{ adjudication.grave.code }}<br>
+      <b>{{ 'adjudication.note' | trans }}:</b> {{ adjudication.note != null ? adjudication.note : '' }}<br>
+      <br>
+      <p>{{ 'messages.technicalOfficeStartTramitation' | trans }}</p>
+      <br>
+      <a href="{{ absolute_url( path('adjudication_edit', {'adjudication': adjudication.id}) ) }}">{{ 'mail.editAdjudication' | trans }}</a>
+    </body>
+</html> 
+{% endapply %}

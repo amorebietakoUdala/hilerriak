@@ -4,8 +4,31 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app_name: hilerriak
+    max_movements: 50
+    max_adjudications: 50
+    mailer_from: "%env(MAILER_FROM)%"
+    mailerBCC: '%env(MAILER_BCC)%'
+    sendBCC: '%env(bool:SEND_BCC)%'
+    mailer_technical_office: '%env(MAILER_TECHNICAL_OFFICE)%'
+    mailer_undertaker: '%env(MAILER_UNDERTAKER)%'
 
 services:
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+
+    ldap:
+        alias: Symfony\Component\Ldap\Ldap
+            
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: '%env(LDAP_HOST)%'
+                port: '%env(LDAP_PORT)%'
+                encryption: none
+                options:
+                    protocol_version: 3
+                    referrals: false    
+                    
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -15,7 +38,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

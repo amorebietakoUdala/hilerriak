@@ -1,0 +1,38 @@
+
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div>
+        <div class="row align-items-center mb-1">
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.cemetery, { 'attr': 
+                    { 'class' : 'form-select form-select-sm' }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.type, { 'attr': 
+                    { 'class' : 'form-select form-select-sm' }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.code, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.years, { 'attr': 
+                    { 'class' : 'form-control form-control-sm' }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.free, {'attr': 
+                    { 'class' : 'form-select form-select-sm' }
+                }) }}
+            </div>
+            <div class="col-lg-auto">
+                <button class="btn btn-primary" type="submit">{{ 'btn.search' | trans }}</button>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}

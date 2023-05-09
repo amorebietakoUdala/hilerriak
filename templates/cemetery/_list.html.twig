@@ -1,0 +1,60 @@
+{% if cemeterys is defined and cemeterys|length > 0 %}
+<div  {{ stimulus_controller('entity', {
+         'entitySaveUrl': path('cemetery_new'),
+		})}}>
+<table class="table"
+   data-toggle="table"
+   data-table-target="table"
+   data-page-number="{{ page }}" 
+   data-page-size="{{ pageSize }}"
+   data-page-sortName="{{ sortName }}"
+   data-page-sortOrder="{{ sortOrder }}">
+   <thead>
+      <tr>
+         <th data-sortable="true">{{ 'Id' | trans }}</th>
+         <th data-sortable="true">{{ 'cemetery.name' | trans }}</th>
+         <th data-sortable="true">{{ 'cemetery.graves' | trans }}</th>
+         <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for cemetery in cemeterys %}
+         <tr>
+               <td>{{ cemetery.id }}</td>
+               <td>{{ cemetery.name }}</td>
+               <td>{{ cemetery.graves | length }}</td>
+               <td>
+                  <a href="{{ path('cemetery_show', {'cemetery': cemetery.id}) }}" data-action="entity#edit">
+                     <i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('cemetery_edit', {'cemetery': cemetery.id}) }}" data-action="entity#edit" data-allowEdit="true">
+                     <i class="fa fa-edit" title='{{ "btn.edit" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('cemetery_delete', {'cemetery': cemetery.id}) }}" 
+                     data-action="click->entity#delete" 
+                     data-token="{{ csrf_token('delete' ~ cemetery.id) }}">
+                     <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('cemetery_new_zone', {'cemetery': cemetery.id}) }}">
+                     <i class="fa fa-hammer" title='{{ "btn.newZone" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+               </td>
+         </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{% else %}
+   <div class="alert alert-secondary mt-3" role="alert">{{"messages.results0" | trans }}</div>
+{% endif %}
+<span class="pull-right">
+   <a class="btn btn-primary rounded-circle fixed-bottom-right z-index-100" data-action="click->entity#new">
+      <i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i>
+   </a>
+</span>
+{{ include('common/_modal.html.twig', {
+   'modalTitle': 'modal.title.cemetery' | trans,
+   'formTemplate': 'cemetery/_form.html.twig'
+   }) 
+}}
+{{ include('common/_alert.html.twig') }}
+</div>

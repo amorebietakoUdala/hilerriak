@@ -1,0 +1,60 @@
+{% if adjudications is defined and adjudications|length > 0 %}
+<div  {{ stimulus_controller('entity', {
+         'entitySaveUrl': path('adjudication_new'),
+		})}}>
+   <table class="table"
+      data-toggle="table"
+      data-table-target="table"
+      data-page-number="{{ page }}" 
+      data-page-size="{{ pageSize }}"
+      data-page-sortName="{{ sortName }}"
+      data-page-sortOrder="{{ sortOrder }}">
+      <thead>
+         <tr>
+            <th data-sortable="true">{{ 'Id' | trans }}</th>
+            <th data-sortable="true">{{ 'adjudication.cemetery' | trans }}</th>
+            <th data-sortable="true">{{ 'adjudication.grave' | trans }}</th>
+            <th data-sortable="true">{{ 'adjudication.owner' | trans }}</th>
+            <th data-sortable="true">{{ 'adjudication.current' | trans }}</th>
+            <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for adjudication in adjudications %}
+            <tr>
+                  <td>{{ adjudication.id }}</td>
+                  <td>{{ adjudication.grave != null ? adjudication.grave.cemetery.name : '' }}</td>
+                  <td>{{ adjudication.grave != null ? adjudication.grave.code : '' }}</td>
+                  <td>{{ adjudication.owner != null ? adjudication.owner.fullname : '' }}</td>
+                  {% if adjudication.current == null %}
+                     <td>{{ 'label.unknown' | trans }}</td>
+                  {% else %}
+                     <td>{{ adjudication.current ? 'label.yes' | trans : 'label.no' | trans }}</td>
+                  {% endif %}
+                  <td>
+                     <a href="{{ path('adjudication_show', {'adjudication': adjudication.id}) }}" data-action="click->table#onClick" data-pagination="false">
+                        <i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                     <a href="{{ path('adjudication_edit', {'adjudication': adjudication.id}) }}" data-action="click->table#onClick" data-pagination="false">
+                        <i class="fa fa-edit" title='{{ "btn.edit" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                     <a href="{{ path('adjudication_delete', {'adjudication': adjudication.id}) }}"
+                        data-action="click->entity#delete" 
+                        data-token="{{ csrf_token('delete' ~ adjudication.id) }}">
+                        <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                  </td>
+            </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+</div>
+{% else %}
+   <div class="alert alert-secondary mt-3" role="alert">{{"messages.results0" | trans }}</div>
+{% endif %}
+<span class="pull-right">
+   <a href="{{ path('adjudication_new') }}" class="btn btn-primary rounded-circle fixed-bottom-right z-index-100">
+      <i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i>
+   </a>
+</span>
+{{ include('common/_alert.html.twig') }}

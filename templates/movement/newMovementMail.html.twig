@@ -1,0 +1,30 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+      <b>{{ 'Id' | trans }}:</b> {{ movement.id }}<br>
+      {% if app.request.locale|split('_')[0] == 'es' %}
+         <b>{{ 'movement.type' | trans }}:</b> {{ movement.type.descriptionEs }}<br>
+      {% else %}
+         <b>{{ 'movement.type' | trans }}:</b> {{ movement.type.descriptionEu }}<br>
+      {% endif %}
+      <b>{{ 'movement.source' | trans }}:</b> {{ movement.source }}<br>
+      {% if app.request.locale|split('_')[0] == 'es' %}
+        <b>{{ 'movement.destinationType' | trans }}:</b> {{ movement.destinationType.descriptionEs }}<br>
+      {% else %}
+        <b>{{ 'movement.destinationType' | trans }}:</b> {{ movement.destinationType.descriptionEu }}<br>
+      {% endif %}
+      <b>{{ 'movement.destination' | trans }}:</b> {{ movement.destination }}<br>
+      <b>{{ 'movement.defunctFullname' | trans }}:</b> {{ movement.defunctFullname }}<br>
+      <b>{{ 'mail.deceaseDate' | trans }}:</b> {{ movement.deceaseDate | date('Y-m-d') }}<br>
+      <b>{{ 'movement.note' | trans }}:</b> {{ movement.note != null ? movement.note : '' }}<br>
+      <br>
+      <a href="{{ absolute_url( path('movement_edit', {'movement': movement.id}) ) }}">{{ 'mail.editMovement' | trans }}</a>
+    </body>
+</html> 
+{% endapply %}

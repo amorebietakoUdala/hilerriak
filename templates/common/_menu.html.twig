@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-1">
+  <a class="navbar-brand" href="#">&nbsp;</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+	 		{% if is_granted('ROLE_GRAVESELLER') %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle {{ ( app.request.attributes.get('_route') == 'owner_index' ) ? 'active': '' }}" href="#" id="navbarOwners" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ 'navitem.owners' | trans | capitalize }}
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarOwners">
+						<a class="dropdown-item {{ ( app.request.attributes.get('_route') == 'owner_index' ) ? 'active': '' }}" href="{{ path('owner_index') }}">{{"navitem.owners.list" | trans | capitalize}}</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle {{ ( 
+						app.request.attributes.get('_route') == 'adjudication_index' or 
+						app.request.attributes.get('_route') == 'adjudication_new'
+					) ? 'active': '' }}" href="#" id="navbarAdjudications" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ 'navitem.adjudications' | trans | capitalize }}
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarAdjudications">
+						<a class="dropdown-item {{ ( app.request.attributes.get('_route') == 'adjudication_new' ) ? 'active': '' }}" href="{{ path('adjudication_new') }}">{{"navitem.adjudication.new" | trans | capitalize}}</a>
+						<a class="dropdown-item {{ ( app.request.attributes.get('_route') == 'adjudication_index' ) ? 'active': '' }}" href="{{ path('adjudication_index') }}">{{"navitem.adjudication.list" | trans | capitalize}}</a>
+					</div>
+				</li>
+			{% endif %}
+			<li class="nav-item">
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'movement_index' ) ? 'active': '' }}" href="{{ path('movement_index') }}" id="navbarMovements" aria-haspopup="true" aria-expanded="false">
+					{{ 'navitem.movements' | trans | capitalize }}
+				</a>
+			</li>
+			{% if is_granted('ROLE_UNDERTAKER') %}
+			<li class="nav-item">
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' ) ? 'active': '' }}" href="{{ path('grave_index') }}">{{"navitem.graves" | trans | capitalize}}</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' ) ? 'active': '' }}" href="{{ path('cemetery_index') }}">{{"navitem.cemeterys" | trans | capitalize}}</a>
+			</li>
+			{% endif %}
+			{% if app.user %}
+				{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarAdmin" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ 'navitem.administration' | trans | capitalize }}
+					</a>
+					<div id="js-menu-administration" class="dropdown-menu" aria-labelledby="navbarAdmin">
+						<a class="dropdown-item" href="{{ path('admin_user_index') }}">{{"navitem.users" | trans | capitalize}}</a>
+						<a class="dropdown-item" href="{{ path('graveType_index') }}">{{"navitem.graveTypes" | trans | capitalize}}</a>
+					</div>
+				</li>
+				{% endif %}
+      {% endif %}
+    </ul>
+  </div>
+
+</nav>
+		
+

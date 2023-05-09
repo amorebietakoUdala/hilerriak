@@ -1,0 +1,35 @@
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form) }}
+   <div class="row align-items-center" {{ stimulus_controller('adjudication-form', {
+        'gravesServiceUrl' : path('api_graves_service'),
+        'ownersServiceUrl' : path('api_owners_cemetery'),
+        'locale' : app.request.locale,
+      })}}>
+      <div class="col-lg-3 col-md-2 col-sm-6">
+         {{ form_row(form.cemetery, { 'attr': 
+            { 'class' : 'form-select form-select-sm', 
+               'data-adjudication-form-target' : "cemeteryInput", 
+               'data-action': 'change->adjudication-form#refreshGraves change->adjudication-form#refreshOwners', 
+            }
+         }) }}
+      </div>
+      <div class="col-lg-auto col-md-2 col-sm-6">
+         {{ form_row(form.grave, { 'attr': { 'class' : 'form-select form-select-sm', 'data-adjudication-form-target' : "graveInput" } }) }}
+      </div>
+      <div class="col-lg-auto col-md-2 col-sm-6">
+         {{ form_row(form.owner, { 'attr': { 'class' : 'form-select form-select-sm', 'data-adjudication-form-target' : "ownerInput" } }) }}
+      </div>
+      <div class="col-lg-auto col-md-2 col-sm-6">
+         {{ form_row(form.current, { 'attr': { 'class' : 'form-select form-select-sm', 'data-adjudication-form-target' : "currentInput" } }) }}
+      </div>
+      <div class="col-lg-auto col-md-2 col-sm-6">
+         <button class="btn btn-primary" type="submit">{{ 'btn.search' | trans }}</button>
+      </div>
+      <div class="col-lg-1 col-md-2 col-sm-6">
+         <button type="button" class="btn btn-success" data-action="adjudication-form#clean">{{ button_label|default('btn.clean')|trans }}</button>
+      </div>
+    </div>
+{{ form_end(form) }}

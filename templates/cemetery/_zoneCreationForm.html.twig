@@ -1,0 +1,47 @@
+
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div {{ stimulus_controller('zone-creation-form',{
+        'typePanteon': constant('App\\Entity\\GraveType::PANTEON'),
+        'typePit': constant('App\\Entity\\GraveType::PIT'),
+    }) }}>
+        <div class="row align-items-center mb-1">
+            <h1 class="h3">{{ cemetery.name }}</h1>
+            {# <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.cemetery, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', 'readonly': 'readonly' }
+                }) }}
+            </div> #}
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.letter, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "letterInput" }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.high, { 'attr': { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "highInput" } }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.width, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "widthInput" }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.type, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', 'data-action': 'change->zone-creation-form#onChange' }
+                }) }}
+            </div>
+        </div>
+        <div class="row mt-2 mb-5 justify-content-center">
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">{{ 'btn.save' | trans }}</button>
+            </div>
+            <div class="col-auto">
+                <a href="{{ returnUrl is defined and not returnUrl is empty ? returnUrl : path('grave_index') }}" class="btn btn-secondary">{{ 'btn.cancel' | trans }}</a>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}

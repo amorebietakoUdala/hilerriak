@@ -1,0 +1,80 @@
+
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form, { 'attr': { 
+        'data-controller' : 'movement-search-form', 
+        'locale': app.request.locale,
+    }})
+}}
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.type, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-search-form-target': 'typeInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.source, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-search-form-target': 'sourceInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.destinationType, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-search-form-target': 'destinationTypeInput'}
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.destination, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-search-form-target': 'destinationInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.expedientNumber, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'expedientNumberInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.registrationNumber, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'registrationNumberInput'}
+            }) }}
+        </div>
+    </div>
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctName, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctNameInput' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctSurname1, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctSurname1Input' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.defunctSurname2, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctSurname2Input' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.deceaseDate, { 'attr': { 
+                    'class' : 'form-control form-control-sm', 
+                    'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
+                    'data-movement-search-form-target': 'deceaseDateInput' 
+                }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.finalized, { 'attr': {
+                'class' : 'form-select form-select-sm', 
+                'data-movement-search-form-target': 'finalizedInput'}
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            <button class="btn btn-primary" type="submit">{{ 'btn.search' | trans }}</button>
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            <button class="btn btn-success" type="button" data-action="movement-search-form#clean">{{ 'btn.clean' | trans }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

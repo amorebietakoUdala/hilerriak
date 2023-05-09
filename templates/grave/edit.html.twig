@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if readonly %}
+        {{ 'app.title.grave.show' | trans }}
+    {% elseif new %}
+        {{ 'app.title.grave.new' | trans }}
+    {% else %}
+        {{ 'app.title.grave.edit' | trans }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <main class="container-fluid">
+        <div class="mt-2">
+            {{ include('grave/_form.html.twig',{
+                'readonly': readonly,
+                'new': new,
+            }) }}
+        </div>
+    </main>
+{% endblock body %}
