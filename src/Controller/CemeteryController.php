@@ -14,6 +14,7 @@ use App\Repository\GraveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CemeteryController extends BaseController
@@ -140,14 +141,36 @@ class CemeteryController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            // TODO comprobar que la letra no exista previamente.
-            $exists = $this->checkLetterAlreadyExists($cemetery, $data['letter']);
-            if ($exists) {
-                $this->addFlash('error', 'messages.letterAlreadyExists');
-                return $this->renderForm('cemetery/zoneCreation.html.twig',[
-                    'form' => $form,
-                    'cemetery' => $cemetery,
-                ]);
+            $type = $data['type'];
+            $letter = strtoupper($data['letter']);
+            $zone = strtoupper($data['zone']);
+            if ($type->getId() === GraveType::PANTEON) {
+                if ($zone === null) {
+                    $this->addFlash('error', 'messages.zoneRequiredOnPantheons');
+                    return $this->renderForm('cemetery/zoneCreation.html.twig',[
+                        'form' => $form,
+                        'cemetery' => $cemetery,
+                    ]);
+                }
+                $exists = $this->checkPantheonNumberAlreadyExists($cemetery, $zone, $letter);
+                if ($exists) {
+                    $this->addFlash('error', new TranslatableMessage('messages.pantheonNumberAlreadyExists',[
+                        '{number}' => $zone,
+                    ]));
+                    return $this->renderForm('cemetery/zoneCreation.html.twig',[
+                        'form' => $form,
+                        'cemetery' => $cemetery,
+                    ]);
+                }
+            } else {
+                $exists = $this->checkSideAlreadyExists($cemetery, $letter);
+                if ($exists) {
+                    $this->addFlash('error', 'messages.letterAlreadyExists');
+                    return $this->renderForm('cemetery/zoneCreation.html.twig',[
+                        'form' => $form,
+                        'cemetery' => $cemetery,
+                    ]);
+                }
             }
             $graves = $this->createGraves($cemetery, $data);
             $this->em->flush();
@@ -191,41 +214,55 @@ class CemeteryController extends BaseController
         $graves = [];
         $rows = $data['high'];
         $columns = $data['width'];
-        $letter = $data['letter'];
+        $letter = strtoupper($data['letter']);
+        $zone = $data['zone'];
+        $years = $data['years'];
         /** @var GraveType $type */
         $type = $data['type'];
         for ($i = 1; $i <= $rows; $i++ ) {
             for ($j = 1; $j <= $columns; $j++ ) {
-                if ($type->getId() === GraveType::OCUPATION || $type->getId() === GraveType::PANTEON ) {
-                    $grave = new Grave();
-                    $grave->setType($type);
-                    $grave->setCemetery($cemetery);
-                    $grave->setFree(true);
-                    // $grave->setDescription($type->getDescriptionEs());
-                    $code = $letter.'-'.str_pad($i,2,0,STR_PAD_LEFT).'-'.str_pad($j,2,0,STR_PAD_LEFT);
-                    $grave->setCode($code);
+                if ($type->getId() === GraveType::OCUPATION ) {
+                    $grave = Grave::createGrave($cemetery, $type, $letter, $i, $j, $years);
                     $this->em->persist($grave);
+                    $graves[] = $grave;
+                } else if ( $type->getId() === GraveType::SLAB || $type->getId() === GraveType::PIT) {
+                    // Set always row 0 to slabs
+                    $grave = Grave::createGrave($cemetery, $type, $letter, 0, $j, $years);
+                    $this->em->persist($grave);
+                    $graves[] = $grave;
+                } else if ( $type->getId() === GraveType::PANTEON ) {
+                    $grave = Grave::createGrave($cemetery, $type, $letter, $zone, $j, $years);
+                    $this->em->persist($grave);
+                    $graves[] = $grave;
                 } else {
                     // DUST AND REST graves have an extra letter.
                     for ($k = 'A'; $k <= 'D'; $k++ ) {
-                        $grave = new Grave();
-                        $grave->setType($type);
-                        $grave->setCemetery($cemetery);
-                        $grave->setFree(true);
-                        // $grave->setDescription($type->getDescriptionEs());
-                        $code = $letter.'-'.str_pad($i,2,0,STR_PAD_LEFT).'-'.str_pad($j,2,0,STR_PAD_LEFT).'-'.$k;
-                        $grave->setCode($code);
+                        $grave = Grave::createGrave($cemetery, $type, $letter, $i, str_pad($j,2,0,STR_PAD_LEFT).'-'.$k, $years);
+                            if ( $type->getId() === GraveType::ASHES ) {
+                            $grave->setCapacity(2);
+                        } else {
+                            $grave->setCapacity(1);
+                        }
+                            // $grave->setDescription($type->getDescriptionEs());
                         $this->em->persist($grave);
+                        $graves[] = $grave;
                     }
                 }
-                $graves[] = $grave;
             }
         }
         return $graves;
     }
 
-    private function checkLetterAlreadyExists(Cemetery $cemetery, $letter) {
-        $graves = $this->graveRepo->findByCemeteryAndLetter($cemetery, $letter);
+    private function checkSideAlreadyExists(Cemetery $cemetery, $side) {
+        $graves = $this->graveRepo->findByCemeteryAndSide($cemetery, $side);
+        if (count($graves) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private function checkPantheonNumberAlreadyExists(Cemetery $cemetery, $zone, $letter) {
+        $graves = $this->graveRepo->findByCemeteryNumberAndLetter($cemetery, $zone, $letter);
         if (count($graves) > 0) {
             return true;
         }

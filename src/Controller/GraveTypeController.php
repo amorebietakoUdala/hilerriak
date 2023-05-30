@@ -54,7 +54,7 @@ class GraveTypeController extends BaseController
                     'readonly' => false,
                 ], new Response(null, 422));        
             } else {
-                $$graveType = $data;
+                $graveType = $data;
             }
             $this->em->persist($graveType);
             $this->em->flush();

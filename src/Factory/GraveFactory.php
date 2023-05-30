@@ -43,8 +43,6 @@ final class GraveFactory extends ModelFactory
             'code' => strtoupper(self::faker()->bothify('?-##-##')),
             // 'description' => self::faker()->words(3,true),
             'years' => self::faker()->numberBetween(10,75),
-            // 'expedientCreationYear' => self::faker()->year('+10 years'),
-            // 'registrationNumber' => self::faker()->numberBetween(0,9999),
             'free' => self::faker()->boolean(),
         ];
     }

@@ -60,11 +60,6 @@ class MovementSearchFormType extends AbstractType
                     return $grave->getCodeCemetery();
                 }                
             ])
-            ->add('expedientNumber', null,[
-                'label' => 'movement.expedientNumber',
-                'disabled' => $readonly,
-                'required' => false,
-            ])
             ->add('registrationNumber', IntegerType::class,[
                 'label' => 'movement.registrationNumber',
                 'disabled' => $readonly,
@@ -88,8 +83,16 @@ class MovementSearchFormType extends AbstractType
                 'disabled' => $readonly,
                 'required' => false,
             ])
-            ->add('deceaseDate', DateType::class, [
-                'label' => 'movement.deceaseDate',
+            ->add('deceaseDateFrom', DateType::class, [
+                'label' => 'movement.deceaseDateFrom',
+                'disabled' => $readonly,
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
+            ])
+            ->add('deceaseDateTo', DateType::class, [
+                'label' => 'movement.deceaseDateTo',
                 'disabled' => $readonly,
                 'widget' => 'single_text',
                 'html5' => false,

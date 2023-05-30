@@ -33,6 +33,11 @@ class DefaultController extends AbstractController
             'finalized' => false,
          ]);
       }
+      if ($this->isGranted("ROLE_TECHNICAL_OFFICE")) {
+         return $this->redirectToRoute('movement_index',[
+            'finalized' => true,
+         ]);
+      }
 
       return $this->redirectToRoute('owner_index');
    }
@@ -49,7 +54,7 @@ class DefaultController extends AbstractController
    //     }
    //     $owners = $this->ownerRepo->findByDni($dni);
    //     return $this->json($owners,200,[],[
-   //        'groups' => 'api_owner',
+   //        'groups' => 'api_person',
    //     ]);
    //  }
 
@@ -65,7 +70,7 @@ class DefaultController extends AbstractController
    //     }
    //     $owners = $this->ownerRepo->findByFullname($fullname);
    //     return $this->json($owners,200,[],[
-   //        'groups' => 'api_owner',
+   //        'groups' => 'api_person',
    //     ]);
    //  }
 }

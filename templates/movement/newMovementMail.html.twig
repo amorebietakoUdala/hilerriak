@@ -8,18 +8,52 @@
     </head>
     <body>
       <b>{{ 'Id' | trans }}:</b> {{ movement.id }}<br>
+      <b>{{ 'movement.registrationNumber' | trans }}:</b> {{ movement.registrationNumber }}<br>
+      <b>{{ 'petitioner.name' | trans }}:</b> {{ movement.petitioner.name }}<br>
+      <b>{{ 'petitioner.surname1' | trans }}:</b> {{ movement.petitioner.surname1 }}<br>
+      <b>{{ 'petitioner.surname2' | trans }}:</b> {{ movement.petitioner.surname2 }}<br>
+      <b>{{ 'petitioner.telephone' | trans }}:</b> {{ movement.petitioner.telephone }}<br>
+      <b>{{ 'petitioner.email' | trans }}:</b> {{ movement.petitioner.email }}<br>
+      <b>{{ 'movement.wantsToBePresent' | trans }}:</b> {{ movement.wantsToBePresent ? 'label.yes' | trans : 'label.no' | trans }}<br>
       {% if app.request.locale|split('_')[0] == 'es' %}
          <b>{{ 'movement.type' | trans }}:</b> {{ movement.type.descriptionEs }}<br>
       {% else %}
          <b>{{ 'movement.type' | trans }}:</b> {{ movement.type.descriptionEu }}<br>
       {% endif %}
-      <b>{{ 'movement.source' | trans }}:</b> {{ movement.source }}<br>
+      {% if movement.source is not null %}
+        <b>{{ 'movement.source' | trans }}:</b> {{ movement.source }}<br>
+          {% if app.request.locale|split('_')[0] == 'es' %}
+            <b>{{ 'movement.source.type' | trans }}:</b> {{ movement.source.type.descriptionEs }}<br>
+          {% else %}
+            <b>{{ 'movement.source.type' | trans }}:</b> {{ movement.source.type.descriptionEu }}<br>
+          {% endif %}
+        <b>{{ 'movement.source.side' | trans }}:</b> {{ movement.source.side }}<br>
+        <b>{{ 'movement.source.zoneOrRow' | trans }}:</b> {{ movement.source.zoneOrRow }}<br>
+        <b>{{ 'movement.source.number' | trans }}:</b> {{ movement.source.number }}<br>
+        {# {% for adjudication in movement.source.adjudications %}
+          <b>{{ 'movement.sourceOwnerFullname' | trans }}:</b> {{ adjudication.owner.fullname }}<br>
+          <b>{{ 'movement.sourceOwnerTelephone' | trans }}:</b> {{ adjudication.owner.telephone }}<br>
+          <b>{{ 'movement.sourceOwnerEmail' | trans }}:</b> {{ adjudication.owner.email }}<br>
+        {% endfor %} #}
+      {% endif %}
+
       {% if app.request.locale|split('_')[0] == 'es' %}
         <b>{{ 'movement.destinationType' | trans }}:</b> {{ movement.destinationType.descriptionEs }}<br>
       {% else %}
         <b>{{ 'movement.destinationType' | trans }}:</b> {{ movement.destinationType.descriptionEu }}<br>
       {% endif %}
+      {% if movement.destination is not null %}
       <b>{{ 'movement.destination' | trans }}:</b> {{ movement.destination }}<br>
+          {% if app.request.locale|split('_')[0] == 'es' %}
+            <b>{{ 'movement.destination.type' | trans }}:</b> {{ movement.destination.type.descriptionEs }}<br>
+          {% else %}
+            <b>{{ 'movement.destination.type' | trans }}:</b> {{ movement.destination.type.descriptionEu }}<br>
+          {% endif %}
+        <b>{{ 'movement.destination.side' | trans }}:</b> {{ movement.destination.side }}<br>
+        <b>{{ 'movement.destination.zoneOrRow' | trans }}:</b> {{ movement.destination.zoneOrRow }}<br>
+        <b>{{ 'movement.destination.number' | trans }}:</b> {{ movement.destination.number }}<br>
+
+      {% endif %}
       <b>{{ 'movement.defunctFullname' | trans }}:</b> {{ movement.defunctFullname }}<br>
       <b>{{ 'mail.deceaseDate' | trans }}:</b> {{ movement.deceaseDate | date('Y-m-d') }}<br>
       <b>{{ 'movement.note' | trans }}:</b> {{ movement.note != null ? movement.note : '' }}<br>

@@ -22,16 +22,9 @@ class AdjudicationEditFormType extends AbstractType
     {
         $readonly = $options['readonly'];
         $builder
-            ->add('decreeDate', DateType::class,[
-                'label' => 'adjudication.decreeDate',
+            ->add('adjudicationYear', IntegerType::class,[ 
+                'label' => 'adjudication.adjudicationYear',
                 'disabled' => $readonly,
-                'widget' => 'single_text',
-                'html5' => false,
-                'format' => 'yyyy-MM-dd',
-                'required' => false,
-                'constraints' => [
-                    new NotBlank(),
-                ]
             ])
             ->add('expiryYear', IntegerType::class,[ 
                 'label' => 'adjudication.expiryYear',
@@ -41,23 +34,9 @@ class AdjudicationEditFormType extends AbstractType
                 'label' => 'adjudication.note',
                 'disabled' => $readonly,
             ])
-            ->add('renewed', CheckboxType::class,[ 
-                'label' => 'adjudication.renewed',
-                'disabled' => $readonly,
-                'required' => false,
-            ])
-            ->add('expedientNumber',null,[ 
-                'label' => 'adjudication.expedientNumber',
-                'disabled' => $readonly,
-            ])
             ->add('registrationNumber', IntegerType::class,[ 
                 'label' => 'adjudication.registrationNumber',
                 'disabled' => $readonly,
-            ])
-            ->add('current', CheckboxType::class,[ 
-                'label' => 'adjudication.current',
-                'disabled' => $readonly,
-                'required' => false,
             ])
             ->add('owner', EntityType::class,[
                 'label' => 'adjudication.owner',

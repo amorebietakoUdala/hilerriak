@@ -64,7 +64,7 @@ class GraveController extends BaseController
     {
         $this->loadQueryParameters($request);
         $form = $this->createForm(GraveFormType::class, $grave,[
-            'new' => true,
+            'new' => false,
             'readonly' => false,
         ]);
         $form->handleRequest($request);

@@ -12,6 +12,7 @@ parameters:
     sendBCC: '%env(bool:SEND_BCC)%'
     mailer_technical_office: '%env(MAILER_TECHNICAL_OFFICE)%'
     mailer_undertaker: '%env(MAILER_UNDERTAKER)%'
+    test_environment: '%env(bool:TEST_ENVIRONMENT)%'
 
 services:
     Symfony\Component\Ldap\Ldap:

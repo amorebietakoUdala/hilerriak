@@ -8,15 +8,11 @@
     'data-adjudication-form-graves-service-url-value': path('api_graves_service'),
     'data-adjudication-form-owners-service-url-value': path('api_owners_cemetery'),
     'data-adjudication-form-locale-value': app.request.locale,
-    'data-action': 'adjudication-form#onSubmit',
     }}) 
 }}
     <div class="row align-items-center">
         {% if new %}
-            <div class="col-lg-auto col-md-2 col-sm-6">
-                {{ form_row(form.addMovement, { 'attr': { 'data-adjudication-form-target' : "addMovementInput" } }) }}
-            </div>
-            <div class="col-lg-3 col-md-2 col-sm-6">
+            <div class="col-lg-2 col-md-2 col-sm-6">
                 {{ form_row(form.cemetery, { 'attr': 
                     { 'class' : 'form-select form-select-sm', 'data-adjudication-form-target' : "cemeteryInput", 'data-action': 'change->adjudication-form#refreshGraves'  }
                 }) }}
@@ -33,6 +29,9 @@
             {{ form_row(form.owner, { 'attr': { 'class' : 'form-select form-select-sm', 'data-adjudication-form-target' : "ownerInput" } }) }}
         </div>
         {% if new %}
+            <div class="col-lg-auto col-md-2 col-sm-6">
+                {{ form_row(form.registrationNumber, { 'attr': { 'class' : 'form-control form-control-sm', 'data-adjudication-form-target' : "registrationNumberInput" } }) }}
+            </div>
             <div class="col-lg-1 col-md-2 col-sm-6">
                 <button type="button" class="btn btn-success" data-action="adjudication-form#clean">{{ button_label|default('btn.clean')|trans }}</button>
             </div>
@@ -41,22 +40,13 @@
     {% if not new %}
     <div class="row align-items-center">
         <div class="col-lg-auto col-md-2 col-sm-6">
-            {{ form_row(form.expedientNumber, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
-        </div>
-        <div class="col-lg-auto col-md-2 col-sm-6">
             {{ form_row(form.registrationNumber, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
         </div>
         <div class="col-lg-auto col-md-2 col-sm-6">
-            {{ form_row(form.decreeDate, { 'attr': { 'class' : 'form-control form-control-sm', 'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd' } }) }}
+            {{ form_row(form.adjudicationYear, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
         </div>
         <div class="col-lg-auto col-md-2 col-sm-6">
             {{ form_row(form.expiryYear, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
-        </div>
-        <div class="col-lg-auto col-md-2 col-sm-6">
-            {{ form_row(form.current) }}
-        </div>
-        <div class="col-lg-auto col-md-2 col-sm-6">
-            {{ form_row(form.renewed) }}
         </div>
     </div>
     <div class="row">
@@ -69,9 +59,9 @@
     <a class="btn btn-secondary" href="{{ returnUrl is defined and not returnUrl is empty ? returnUrl : path('adjudication_index') }}">{{ 'btn.cancel' | trans }}</a>
 {{ form_end(form) }}
 
-{{ include('common/_alert.html.twig', {
+{# {{ include('common/_alert.html.twig', {
     'html': 'messages.addMovement' | trans,
     'btnAccept': 'btn.yes' | trans,
     'btnCancel': 'btn.no' | trans,
-}) }}
+}) }} #}
 

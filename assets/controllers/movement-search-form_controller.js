@@ -12,12 +12,12 @@ export default class extends Controller {
       'sourceInput',
       'destinationTypeInput',
       'destinationInput', 
-      'expedientNumberInput', 
       'registrationNumberInput', 
       'defunctNameInput', 
       'defunctSurname1Input', 
       'defunctSurname2Input', 
-      'deceaseDateInput',
+      'deceaseDateFromInput',
+      'deceaseDateToInput',
       'finalizedInput',
    ];
    static values = {
@@ -56,9 +56,6 @@ export default class extends Controller {
          this.destinationInputTarget.value='';
          $(this.destinationInputTarget).trigger('change');
       }
-      if ( this.hasExpedientNumberInputTarget ) {
-         this.expedientNumberInputTarget.value='';
-      }
       if ( this.hasRegistrationNumberInputTarget ) {
          this.registrationNumberInputTarget.value='';
       }
@@ -71,8 +68,11 @@ export default class extends Controller {
       if ( this.hasDefunctSurname2InputTarget ) {
          this.defunctSurname2InputTarget.value='';
       }
-      if ( this.hasDeceaseDateInputTarget ) {
-         this.deceaseDateInputTarget.value='';
+      if ( this.hasDeceaseDateFromInputTarget ) {
+         this.deceaseDateFromInputTarget.value='';
+      }
+      if ( this.hasDeceaseDateToInputTarget ) {
+         this.deceaseDateToInputTarget.value='';
       }
       if ( this.hasFinalizedInputTarget ) {
          this.finalizedInputTarget.value='';

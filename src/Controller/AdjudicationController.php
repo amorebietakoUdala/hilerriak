@@ -6,7 +6,7 @@ use App\Entity\Adjudication;
 use App\Entity\Grave;
 use App\Form\AdjudicationAddFormType;
 use App\Form\AdjudicationEditFormType;
-use App\Form\AdjudicationSearchFormDTO;
+use App\DTO\AdjudicationSearchFormDTO;
 use App\Form\AdjudicationSearchFormType;
 use App\Repository\AdjudicationRepository;
 use App\Repository\CemeteryRepository;
@@ -15,7 +15,7 @@ use App\Repository\OwnerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Email;
+// use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,25 +29,25 @@ class AdjudicationController extends BaseController
     private CemeteryRepository $cemeteryRepo;
     private OwnerRepository $ownerRepo;
     private GraveRepository $graveRepo;
-    private TranslatorInterface $translator;
-    private MailerInterface $mailer;
+    // private TranslatorInterface $translator;
+    // private MailerInterface $mailer;
 
     public function __construct(
         EntityManagerInterface $em, 
         AdjudicationRepository $repo, 
         CemeteryRepository $cemeteryRepo, 
         OwnerRepository $ownerRepo, 
-        GraveRepository $graveRepo, 
-        TranslatorInterface $translator,
-        MailerInterface $mailer
+        GraveRepository $graveRepo 
+        // TranslatorInterface $translator,
+        // MailerInterface $mailer
     ) {
         $this->em = $em;
         $this->repo = $repo;
         $this->cemeteryRepo = $cemeteryRepo;
         $this->ownerRepo = $ownerRepo;
         $this->graveRepo = $graveRepo;
-        $this->translator = $translator;
-        $this->mailer = $mailer;
+        // $this->translator = $translator;
+        // $this->mailer = $mailer;
     }
 
     /**
@@ -63,27 +63,28 @@ class AdjudicationController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) 
         {
             $data = $form->getData();
-            $addMovement = boolval($data['addMovement']);
-            unset($data['addMovement']);
+            // $addMovement = boolval($data['addMovement']);
+            // unset($data['addMovement']);
             $adjudication = new Adjudication();
             $adjudication->fill($data);
+            $year = intval((new \DateTime())->format('Y'));
+            $adjudication->setAdjudicationYear($year);
             if ($adjudication->getGrave()->getYears() !== null) {
-                $year = intval((new \DateTime())->format('Y'));
                 $adjudication->setExpiryYear($year+$adjudication->getGrave()->getYears());
             }
-            $adjudication->setCurrent(true);
-            $this->uncheckPreviousAdjucationsForGrave($adjudication->getGrave());
+            $this->removeAdjucationsForGrave($adjudication->getGrave());
             $this->em->persist($adjudication);
             $this->em->flush();
-            $this->sendMessage('Hilobi berria adjudikatu da / Se ha adjudicado una nueva sepultura', [$this->getParameter('mailer_technical_office')], $adjudication );
+            // No need to send email on adjudication, it will be notified through AUPAC
+            //$this->sendMessage('Hilobi berria adjudikatu da / Se ha adjudicado una nueva sepultura', [$this->getParameter('mailer_technical_office')], $adjudication );
             $this->addFlash('success', 'messages.adjudicationSaved');
-            if (!$addMovement) {
-                return $this->redirectToRoute('adjudication_index');
-            } else {
-                return parent::redirect($this->generateUrl('movement_new',[
-                    'adjudication' => $adjudication->getId(),
-                ]));
-            }
+            // if (!$addMovement) {
+            // return $this->redirectToRoute('adjudication_index');
+            // } else {
+            return parent::redirect($this->generateUrl('movement_new',[
+                'adjudication' => $adjudication->getId(),
+            ]));
+            // }
         }
         return $this->renderForm('adjudication/edit.html.twig',[
             'form' => $form,
@@ -125,7 +126,6 @@ class AdjudicationController extends BaseController
             $data = $form->getData();
             $this->em->persist($data);
             $this->em->flush();
-            // TODO enviar mensajes a quien corresponda.
             $this->addFlash('success', 'messages.adjudicationSaved');
             return $this->redirectToRoute('adjudication_index');
         }
@@ -134,7 +134,6 @@ class AdjudicationController extends BaseController
             'new' => false,
             'readonly' => false,
         ]);
-
     }
 
     /**
@@ -142,9 +141,6 @@ class AdjudicationController extends BaseController
      */
     public function delete(Adjudication $adjudication, Request $request): Response 
     {
-        if ($this->checkRemovable($adjudication)) {
-            return new Response($this->translator->trans('messages.adjudicationIsCurrent'), 422);
-        }
         if ($this->isCsrfTokenValid('delete'.$adjudication->getId(), $request->get('_token'))) {
             $this->em->remove($adjudication);
             $this->em->flush();
@@ -203,6 +199,9 @@ class AdjudicationController extends BaseController
         if (isset($criteria['grave'])) {
             $adjudicationSearchForm->setGrave($this->graveRepo->find($criteria['grave']));
         }
+        if (isset($criteria['expired'])) {
+            $adjudicationSearchForm->setGrave($this->graveRepo->find($criteria['expired']));
+        }
         return $adjudicationSearchForm;
     }
 
@@ -217,44 +216,35 @@ class AdjudicationController extends BaseController
         return $formValues;
     }
 
-    private function uncheckPreviousAdjucationsForGrave(Grave $grave) {
+    private function removeAdjucationsForGrave(Grave $grave) {
         $adjudications = $grave->getAdjudications();
         foreach($adjudications as $adjudication) {
-            $adjudication->setCurrent(false);
-            $this->em->persist($adjudication);
+            $this->em->remove($adjudication);
         }
     }
 
-    protected function checkRemovable(Adjudication $adjudication) {
-        // If has adjudications can't be deleted
-        if ($adjudication->isCurrent()) {
-            return false;
-        }
-        return true;
-    }
+    // private function sendMessage($subject, array $to, Adjudication $adjudication, $template = null)
+    // {
 
-    private function sendMessage($subject, array $to, Adjudication $adjudication, $template = null)
-    {
-
-        $email = (new Email())
-            ->from($this->getParameter('mailer_from'))
-            ->to(...$to)
-            ->subject($subject);
-        if ($template) {
-            $email->html($this->renderView($template, [
-                'adjudication' => $adjudication,
-            ]));
-        } else {
-            $email->html($this->renderView('adjudication/graveAdjudicatedMail.html.twig', [
-                'adjudication' => $adjudication,
-            ]));
-        }
-        if ( $this->getParameter('sendBCC') ) {
-            $addresses = [$this->getParameter('mailerBCC')];
-            foreach ($addresses as $address) {
-                $email->addBcc($address);
-            }
-        }            
-        $this->mailer->send($email);
-    }
+    //     $email = (new Email())
+    //         ->from($this->getParameter('mailer_from'))
+    //         ->to(...$to)
+    //         ->subject($subject);
+    //     if ($template) {
+    //         $email->html($this->renderView($template, [
+    //             'adjudication' => $adjudication,
+    //         ]));
+    //     } else {
+    //         $email->html($this->renderView('adjudication/graveAdjudicatedMail.html.twig', [
+    //             'adjudication' => $adjudication,
+    //         ]));
+    //     }
+    //     if ( $this->getParameter('sendBCC') ) {
+    //         $addresses = [$this->getParameter('mailerBCC')];
+    //         foreach ($addresses as $address) {
+    //             $email->addBcc($address);
+    //         }
+    //     }            
+    //     $this->mailer->send($email);
+    // }
 }

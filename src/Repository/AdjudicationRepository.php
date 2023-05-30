@@ -60,10 +60,10 @@ class AdjudicationRepository extends ServiceEntityRepository
             $qb->andWhere('a.owner = :owner')
                 ->setParameter('owner', $criteria['owner']);
             }
-            if (isset($criteria["current"])) {
-                $qb->andWhere('a.current = :current')
-                    ->setParameter('current', $criteria['current']);
-                }
+            if (isset($criteria["expired"])) {
+                $qb->andWhere('a.expiryYear < :year')
+                    ->setParameter('year', (new \DateTime())->format('Y'));
+            }
                 //dd($qb->orderBy('a.id', 'ASC')->getQuery()->getResult());
             if ($orderBy) {
                 $qb->orderBy('a.'.array_keys($orderBy)[0], $orderBy[array_keys($orderBy)[0]]);

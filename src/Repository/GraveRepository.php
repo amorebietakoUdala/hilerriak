@@ -55,16 +55,32 @@ class GraveRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-   public function findByCemeteryAndLetter(Cemetery $cemetery, $letter): ?array
+   public function findByCemeteryAndSide(Cemetery $cemetery, $side): ?array
    {
        return $this->createQueryBuilder('g')
            ->andWhere('g.cemetery = :cemetery')
-           ->andWhere('g.code like :code')
+           ->andWhere('g.side = :side')
            ->setParameter('cemetery', $cemetery)
-           ->setParameter('code', $letter.'%')
+           ->setParameter('side', $side)
            ->setMaxResults(1)
            ->getQuery()
            ->getResult()
        ;
    }
+
+   public function findByCemeteryNumberAndLetter(Cemetery $cemetery, $zone, $letter): ?array
+   {
+       return $this->createQueryBuilder('g')
+           ->andWhere('g.cemetery = :cemetery')
+           ->andWhere('g.side = :side')
+           ->andWhere('g.zoneOrRow = :zone')
+           ->setParameter('cemetery', $cemetery)
+           ->setParameter('side', $letter)
+           ->setParameter('zone', $zone)
+           ->setMaxResults(1)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 }

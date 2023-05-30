@@ -24,6 +24,10 @@ class MovementFormType extends AbstractType
         $new = $options['new'];
         $locale = $options['locale'];
         $builder
+            ->add('petitioner', PetitionerFormType::class, [
+                'label' => false,
+                'readonly' => $readonly,
+            ])
             ->add('type', EntityType::class,[
                 'class' => MovementType::class,
                 'label' => 'movement.type',
@@ -63,15 +67,15 @@ class MovementFormType extends AbstractType
                     return $grave->getCodeCemetery();
                 }                
             ])
-            ->add('expedientNumber', null,[
-                'label' => 'movement.expedientNumber',
+            ->add('wantsToBePresent', null,[
+                'label' => 'movement.wantsToBePresent',
                 'disabled' => $readonly,
                 'required' => false,
             ])
             ->add('registrationNumber', IntegerType::class,[
                 'label' => 'movement.registrationNumber',
                 'disabled' => $readonly,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Positive(),
                 ]
@@ -88,6 +92,11 @@ class MovementFormType extends AbstractType
             ])
             ->add('defunctSurname2', null,[
                 'label' => 'movement.defunctSurname2',
+                'disabled' => $readonly,
+                'required' => false,
+            ])
+            ->add('relationship', null,[
+                'label' => 'movement.relationship',
                 'disabled' => $readonly,
                 'required' => false,
             ])

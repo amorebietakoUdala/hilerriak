@@ -15,7 +15,6 @@
          <th data-sortable="true">{{ 'movement.type' | trans }}</th>
          <th data-sortable="true">{{ 'movement.source' | trans }}</th>
          <th data-sortable="true">{{ 'movement.destination' | trans }}</th>
-         <th data-sortable="true">{{ 'movement.expedientNumber' | trans }}</th>
          <th data-sortable="true">{{ 'movement.registrationNumber' | trans }}</th>
          <th data-sortable="true">{{ 'list.deceaseDate' | trans }}</th>
          <th data-sortable="true">{{ 'movement.defunctFullname' | trans }}</th>
@@ -38,16 +37,15 @@
                      {{ "#{movement.destination}-#{movement.destination.cemetery.name}" }}
                   {% endif %}
                </td>
-               <td>{{ movement.expedientNumber }}</td>
                <td>{{ movement.registrationNumber }}</td>
                <td>{{ movement.deceaseDate | date('Y-m-d') }}</td>
                <td>{{ movement.defunctFullName }}</td>
                <td>{{ movement.finalized ? 'label.yes' | trans : 'label.no' | trans }}</td>
                <td>
-                  <a href="{{ path('movement_show', {'movement': movement.id}) }}" data-action="table#click">
+                  <a href="{{ path('movement_show', {'movement': movement.id}) }}" data-action="click->table#onClick" data-pagination="false">
                      <i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i>
                   </a>&nbsp;
-                  <a href="{{ path('movement_edit', {'movement': movement.id}) }}" data-action="table#click">
+                  <a href="{{ path('movement_edit', {'movement': movement.id}) }}" data-action="click->table#onClick" data-pagination="false">
                      <i class="fa fa-edit" title='{{ "btn.edit" | trans | capitalize }}'></i>
                   </a>&nbsp;
                   <a href="{{ path('movement_delete', {'movement': movement.id}) }}" 

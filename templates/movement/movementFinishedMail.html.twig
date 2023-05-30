@@ -8,6 +8,12 @@
     </head>
     <body>
       <b>{{ 'Id' | trans }}:</b> {{ movement.id }}<br>
+      <b>{{ 'movement.registrationNumber' | trans }}:</b> {{ movement.registrationNumber }}<br>
+      <b>{{ 'petitioner.name' | trans }}:</b> {{ movement.petitioner.name }}<br>
+      <b>{{ 'petitioner.surname1' | trans }}:</b> {{ movement.petitioner.surname1 }}<br>
+      <b>{{ 'petitioner.surname2' | trans }}:</b> {{ movement.petitioner.surname2 }}<br>
+      <b>{{ 'petitioner.telephone' | trans }}:</b> {{ movement.petitioner.telephone }}<br>
+      <b>{{ 'petitioner.email' | trans }}:</b> {{ movement.petitioner.email }}<br>
       {% if app.request.locale|split('_')[0] == 'es' %}
          <b>{{ 'movement.type' | trans }}:</b> {{ movement.type.descriptionEs }}<br>
       {% else %}

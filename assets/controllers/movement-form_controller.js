@@ -7,10 +7,11 @@ import 'select2/dist/js/i18n/es.js';
 import 'select2/dist/js/i18n/eu.js';
 
 export default class extends Controller {
-   static targets = ['sourceInput', 'destinationTypeInput', 'destinationRow', 'destinationInput', 'deceaseDateInput'];
+   static targets = ['sourceInput', 'destinationTypeInput', 'destinationRow', 'destinationInput', 'deceaseDateInput', 'wantsToBePresentRow'];
    static values = {
       locale: String,
       destinationTypeGrave: Number,
+      exhumationType: Number,
    };
 
    connect() {
@@ -27,6 +28,16 @@ export default class extends Controller {
          $(this.destinationInputTarget).select2(options);
       }
    }
+
+   onTypeChange(e) {
+      e.preventDefault();
+      const type = e.currentTarget;
+      if (type.value == this.exhumationTypeValue) {
+         this.wantsToBePresentRowTarget.classList.remove('d-none');
+      } else {
+         this.wantsToBePresentRowTarget.classList.add('d-none');
+      }
+   } 
 
    onDestinationTypeChange(e) {
       e.preventDefault();

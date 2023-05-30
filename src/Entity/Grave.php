@@ -6,6 +6,7 @@ use App\Repository\GraveRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Cemetery;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,25 +28,15 @@ class Grave
      */
     private $code;
 
-    // /**
-    //  * @ORM\Column(type="string", length=255, nullable=true)
-    //  */
-    // private $description;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $years;
-
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $expedientCreationYear;
-
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $registrationNumber;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -77,6 +68,31 @@ class Grave
      */
     private $destinationMovements;
 
+    /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private $side;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $zoneOrRow;
+
+    /**
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $number;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $capacity;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $occupation;
+
     public function __construct()
     {
         $this->adjudications = new ArrayCollection();
@@ -101,17 +117,17 @@ class Grave
         return $this;
     }
 
-    // public function getDescription(): ?string
-    // {
-    //     return $this->description;
-    // }
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-    // public function setDescription(string $description): self
-    // {
-    //     $this->description = $description;
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     public function getYears(): ?int
     {
@@ -124,30 +140,6 @@ class Grave
 
         return $this;
     }
-
-    // public function getExpedientCreationYear(): ?int
-    // {
-    //     return $this->expedientCreationYear;
-    // }
-
-    // public function setExpedientCreationYear(?int $expedientCreationYear): self
-    // {
-    //     $this->expedientCreationYear = $expedientCreationYear;
-
-    //     return $this;
-    // }
-
-    // public function getRegistrationNumber(): ?int
-    // {
-    //     return $this->registrationNumber;
-    // }
-
-    // public function setRegistrationNumber(?int $registrationNumber): self
-    // {
-    //     $this->registrationNumber = $registrationNumber;
-
-    //     return $this;
-    // }
 
     public function isFree(): ?bool
     {
@@ -282,5 +274,104 @@ class Grave
 
     public function getCodeCemetery(): string {
         return $this->getCode().'-'.$this->getCemetery()->getName();
+    }
+
+    public function getSide(): ?string
+    {
+        return $this->side;
+    }
+
+    public function setSide(?string $side): self
+    {
+        $this->side = $side;
+
+        return $this;
+    }
+
+    public function getZoneOrRow(): ?int
+    {
+        return $this->zoneOrRow;
+    }
+
+    public function setZoneOrRow(?int $zoneOrRow): self
+    {
+        $this->zoneOrRow = $zoneOrRow;
+
+        return $this;
+    }
+
+    public function getNumber(): ?string
+    {
+        return $this->number;
+    }
+
+    public function setNumber(?string $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(?int $capacity): self
+    {
+        $this->capacity = $capacity;
+
+        return $this;
+    }
+
+    public function getOccupation(): ?int
+    {
+        return $this->occupation;
+    }
+
+    public function setOccupation(?int $occupation): self
+    {
+        $this->occupation = $occupation;
+
+        return $this;
+    }
+
+    public function addOccupation(): self 
+    {
+        $this->occupation++;
+        if ($this->occupation === $this->capacity) {
+            $this->free = false;
+        }
+
+        return $this;
+    }
+
+    public function removeOccupation(): self 
+    {
+        if ($this->occupation > 0) {
+            $this->occupation--;
+        };
+        if ($this->occupation === 0) {
+            $this->free = true;
+        }
+
+        return $this;
+    }
+
+    public static function createGrave(Cemetery $cemetery, GraveType $type, string $side, string $zoneOrRow, string $number, int $years = 10, bool $free = true, int $occupation = 0, int $capacity = 1) {
+        $grave = new Grave();
+        $grave->setType($type);
+        $grave->setCemetery($cemetery);
+        $grave->setFree($free);
+        $grave->setOccupation($occupation);
+        $grave->setCapacity($capacity);
+        $grave->setYears($years);
+        $grave->setSide($side);
+        $grave->setZoneOrRow($zoneOrRow);
+        $grave->setNumber($number);
+        // $grave->setDescription($type->getDescriptionEs());
+        $code = $side.'-'.str_pad($zoneOrRow,2,0,STR_PAD_LEFT).'-'.str_pad($number,2,0,STR_PAD_LEFT);
+        $grave->setCode($code);
+        return $grave;
     }
 }

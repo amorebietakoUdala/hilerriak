@@ -1,0 +1,84 @@
+
+{% block message %}
+	{{ include('common/_messages.html.twig') }}
+{% endblock %}
+
+{{ form_start(form, { 'attr': { 
+        'data-controller' : '', 
+        'locale': app.request.locale,
+    }})
+}}
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.cementerio, { 'attr': 
+                { 'class' : 'form-select form-select-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.numRegistro, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.fechaRegistroFrom, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd'}
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.fechaRegistroTo, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd'}
+            }) }}
+        </div>
+        <div class="col-lg-1 col-md-2 col-sm-6">
+            {{ form_row(form.anyo, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+    </div>
+    <div class="row align-items-center mb-1">
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.tipoAccion, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': ''}
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.origenRestos, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.sepulturaDestino, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+        <div class="col-lg col-md-2 col-sm-6">
+            {{ form_row(form.difunto, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div>
+        {# <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.Descripcion, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div> #}
+        {# <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.Incidencias, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': '' }
+            }) }}
+        </div> #}
+        {# <div class="col-lg col-md-2 col-sm-6">
+            {{ form_row(form.deceaseDateTo, { 'attr': { 
+                    'class' : 'form-control form-control-sm', 
+                    'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
+                    'data-movement-search-form-target': 'deceaseDateToInput' 
+                }
+            }) }}
+        </div> #}
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            <button class="btn btn-primary" type="submit">{{ 'btn.search' | trans }}</button>
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            <button class="btn btn-success" type="button" data-action="movement-search-form#clean">{{ 'btn.clean' | trans }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

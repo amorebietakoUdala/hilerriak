@@ -15,7 +15,7 @@
             <th data-sortable="true">{{ 'adjudication.cemetery' | trans }}</th>
             <th data-sortable="true">{{ 'adjudication.grave' | trans }}</th>
             <th data-sortable="true">{{ 'adjudication.owner' | trans }}</th>
-            <th data-sortable="true">{{ 'adjudication.current' | trans }}</th>
+            <th data-sortable="true">{{ 'adjudication.expiryYear' | trans }}</th>
             <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
          </tr>
       </thead>
@@ -26,11 +26,7 @@
                   <td>{{ adjudication.grave != null ? adjudication.grave.cemetery.name : '' }}</td>
                   <td>{{ adjudication.grave != null ? adjudication.grave.code : '' }}</td>
                   <td>{{ adjudication.owner != null ? adjudication.owner.fullname : '' }}</td>
-                  {% if adjudication.current == null %}
-                     <td>{{ 'label.unknown' | trans }}</td>
-                  {% else %}
-                     <td>{{ adjudication.current ? 'label.yes' | trans : 'label.no' | trans }}</td>
-                  {% endif %}
+                  <td>{{ adjudication.expiryYear != null ? adjudication.expiryYear : '' }}</td>
                   <td>
                      <a href="{{ path('adjudication_show', {'adjudication': adjudication.id}) }}" data-action="click->table#onClick" data-pagination="false">
                         <i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i>
@@ -42,6 +38,9 @@
                         data-action="click->entity#delete" 
                         data-token="{{ csrf_token('delete' ~ adjudication.id) }}">
                         <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                     <a href="{{ path('movement_new', {'adjudication': adjudication.id}) }}" data-action="click->table#onClick" data-pagination="false" data-pagination="true" data-return-url="{{ absolute_url(path('adjudication_index')) }}">
+                        <i class="fa fa-hand-point-left" title='{{ "btn.newMovement" | trans | capitalize }}'></i>
                      </a>&nbsp;
                   </td>
             </tr>

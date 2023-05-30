@@ -17,6 +17,7 @@ class GraveType
     const PANTEON = 3;
     const ASHES = 4;
     const PIT = 5;
+    const SLAB = 6;
 
     /**
      * @ORM\Id

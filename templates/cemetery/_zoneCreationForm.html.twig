@@ -8,6 +8,7 @@
     <div {{ stimulus_controller('zone-creation-form',{
         'typePanteon': constant('App\\Entity\\GraveType::PANTEON'),
         'typePit': constant('App\\Entity\\GraveType::PIT'),
+        'typeSlab': constant('App\\Entity\\GraveType::SLAB'),
     }) }}>
         <div class="row align-items-center mb-1">
             <h1 class="h3">{{ cemetery.name }}</h1>
@@ -17,8 +18,18 @@
                 }) }}
             </div> #}
             <div class="col-lg-2 col-md-2 col-sm-6">
+                {{ form_row(form.type, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', 'data-zone-creation-form-target': 'typeInput', 'data-action': 'change->zone-creation-form#onChange' }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6" data-zone-creation-form-target="letterRow">
                 {{ form_row(form.letter, { 'attr': 
                     { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "letterInput" }
+                }) }}
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 d-none" data-zone-creation-form-target="zoneRow">
+                {{ form_row(form.zone, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "zoneInput" }
                 }) }}
             </div>
             <div class="col-lg-2 col-md-2 col-sm-6">
@@ -30,8 +41,8 @@
                 }) }}
             </div>
             <div class="col-lg-2 col-md-2 col-sm-6">
-                {{ form_row(form.type, { 'attr': 
-                    { 'class' : 'form-control form-control-sm', 'data-action': 'change->zone-creation-form#onChange' }
+                {{ form_row(form.years, { 'attr': 
+                    { 'class' : 'form-control form-control-sm', "data-zone-creation-form-target": "yearsInput" }
                 }) }}
             </div>
         </div>

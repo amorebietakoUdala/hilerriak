@@ -54,6 +54,10 @@ class MovementRepository extends ServiceEntityRepository
             $criteriaLike = array_intersect_key($criteria,$criteriaLikeKeys);
             $criteriaAnd = array_diff_key($criteria,$criteriaLikeKeys);
         }
+        $from = isset($criteriaAnd['deceaseDateFrom']) ? $criteriaAnd['deceaseDateFrom'] : null;
+        unset($criteriaAnd['deceaseDateFrom']);
+        $to = isset($criteriaAnd['deceaseDateTo']) ? $criteriaAnd['deceaseDateTo'] : null;
+        unset($criteriaAnd['deceaseDateTo']);
         $qb = $this->createQueryBuilder('m');
 
         if ( $criteriaAnd ) {
@@ -67,6 +71,14 @@ class MovementRepository extends ServiceEntityRepository
                 $qb->andWhere('m.'.$field.' LIKE :'.$field)
                     ->setParameter($field, '%'.$filtroa.'%');
             }
+        }
+        if ($from) {
+            $qb->andWhere('m.deceaseDate >= :deceaseDateFrom')
+            ->setParameter('deceaseDateFrom', $from);
+        }
+        if ($to) {
+            $qb->andWhere('m.deceaseDate <= :deceaseDateTo')
+            ->setParameter('deceaseDateTo', $to);
         }
         $qb->orderBy('m.id', 'DESC');
         $qb->setMaxResults($limit);
@@ -83,3 +95,4 @@ class MovementRepository extends ServiceEntityRepository
 //        ;
 //    }
 }
+

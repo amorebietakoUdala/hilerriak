@@ -42,11 +42,6 @@ class Movement
     private $destination;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $expedientNumber;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $registrationNumber;
@@ -91,6 +86,27 @@ class Movement
      */
     private $deceaseDate;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $movementEndDate;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $wantsToBePresent;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $relationship;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Petitioner::class, inversedBy="movements", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $petitioner;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,18 +144,6 @@ class Movement
     public function setDestination(?Grave $destination): self
     {
         $this->destination = $destination;
-
-        return $this;
-    }
-
-    public function getExpedientNumber(): ?string
-    {
-        return $this->expedientNumber;
-    }
-
-    public function setExpedientNumber(?string $expedientNumber): self
-    {
-        $this->expedientNumber = $expedientNumber;
 
         return $this;
     }
@@ -265,6 +269,54 @@ class Movement
     public function setDestinationType(?DestinationType $destinationType): self
     {
         $this->destinationType = $destinationType;
+
+        return $this;
+    }
+
+    public function getMovementEndDate()
+    {
+        return $this->movementEndDate;
+    }
+
+    public function setMovementEndDate($movementEndDate)
+    {
+        $this->movementEndDate = $movementEndDate;
+
+        return $this;
+    }
+
+    public function isWantsToBePresent(): ?bool
+    {
+        return $this->wantsToBePresent;
+    }
+
+    public function setWantsToBePresent(?bool $wantsToBePresent): self
+    {
+        $this->wantsToBePresent = $wantsToBePresent;
+
+        return $this;
+    }
+
+    public function getRelationship(): ?string
+    {
+        return $this->relationship;
+    }
+
+    public function setRelationship(?string $relationship): self
+    {
+        $this->relationship = $relationship;
+
+        return $this;
+    }
+
+    public function getPetitioner(): ?Petitioner
+    {
+        return $this->petitioner;
+    }
+
+    public function setPetitioner(?Petitioner $petitioner): self
+    {
+        $this->petitioner = $petitioner;
 
         return $this;
     }

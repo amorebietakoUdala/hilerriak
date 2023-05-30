@@ -33,12 +33,16 @@
 					{{ 'navitem.movements' | trans | capitalize }}
 				</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'historyMovement_index' ) ? 'active': '' }}" href="{{ path('historyMovement_index') }}">{{"navitem.historyMovements" | trans | capitalize}}</a>
+			</li>
 			{% if is_granted('ROLE_UNDERTAKER') %}
 			<li class="nav-item">
-				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' ) ? 'active': '' }}" href="{{ path('grave_index') }}">{{"navitem.graves" | trans | capitalize}}</a>
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' )
+				or app.request.attributes.get('_route') == 'grave_new' ? 'active': '' }}" href="{{ path('grave_index') }}">{{"navitem.graves" | trans | capitalize}}</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' ) ? 'active': '' }}" href="{{ path('cemetery_index') }}">{{"navitem.cemeterys" | trans | capitalize}}</a>
+				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'cemetery_index' ) ? 'active': '' }}" href="{{ path('cemetery_index') }}">{{"navitem.cemeterys" | trans | capitalize}}</a>
 			</li>
 			{% endif %}
 			{% if app.user %}

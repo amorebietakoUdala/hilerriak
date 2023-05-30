@@ -18,6 +18,7 @@ INSERT INTO `grave_type` (`id`,`description_es`,`description_eu`) VALUES (2,'Nic
 INSERT INTO `grave_type` (`id`,`description_es`,`description_eu`) VALUES (3,'Panteon','Panteoia');
 INSERT INTO `grave_type` (`id`,`description_es`,`description_eu`) VALUES (4,'Columbario','Kolumbarioa');
 INSERT INTO `grave_type` (`id`,`description_es`,`description_eu`) VALUES (5,'Fosa','Hobia');
+INSERT INTO `grave_type` (`id`,`description_es`,`description_eu`) VALUES (6,'Losa','Lauza');
 
 /*
 -- Query: SELECT * FROM hilerriak.movement_type
@@ -25,7 +26,7 @@ LIMIT 0, 5000
 
 -- Date: 2023-04-27 14:14
 */
-INSERT INTO `movement_type` (`id`,`description_es`,`description_eu`) VALUES (1,'Incineración','Errausketa');
+INSERT INTO `movement_type` (`id`,`description_es`,`description_eu`) VALUES (1,'Depósito de cenizas','Errautsak gorde');
 INSERT INTO `movement_type` (`id`,`description_es`,`description_eu`) VALUES (2,'Inhumación','Hobiratzea');
 INSERT INTO `movement_type` (`id`,`description_es`,`description_eu`) VALUES (3,'Exhumación','Desobiratzea');
 INSERT INTO `movement_type` (`id`,`description_es`,`description_eu`) VALUES (4,'Traslado','Lekualdaketa');
@@ -40,3 +41,6 @@ LIMIT 0, 5000
 INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (1,'Sepultura','Hilobia');
 INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (2,'Caja de zinc','Zink kutxa');
 INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (3,'Bolsa','Poltsa');
+INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (4,'Incinerar','Erraustu');
+INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (5,'Fosa común','Hobi komuna');
+INSERT INTO `destination_type` (`id`,`description_es`,`description_eu`) VALUES (6,'Otros','Besteren bat');

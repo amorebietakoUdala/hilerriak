@@ -34,12 +34,12 @@ class AdjudicationSearchFormType extends AbstractType
                 'placeholder' => '',
                 'required' => false,
             ])
-            ->add('current', ChoiceType::class,[
-                'label' => 'adjudication.current',
-                'placeholder' => '',
+            ->add('expired', ChoiceType::class,[
+                'label' => 'adjudication.expired',
                 'required' => false,
+                'placeholder' => '',
                 'choices' => [
-                    'label.yes' => true, 
+                    'label.yes' => true,
                     'label.no' => false,
                 ]
             ])

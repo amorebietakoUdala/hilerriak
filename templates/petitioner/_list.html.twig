@@ -1,0 +1,52 @@
+{% if owners is defined and owners|length > 0 %}
+<div  {{ stimulus_controller('entity', {
+         'entitySaveUrl': path('owner_new'),
+		})}}>
+   <table class="table"
+      data-toggle="table"
+      data-table-target="table"
+      data-page-number="{{ page }}" 
+      data-page-size="{{ pageSize }}"
+      data-page-sortName="{{ sortName }}"
+      data-page-sortOrder="{{ sortOrder }}">
+      <thead>
+         <tr>
+            <th data-sortable="true">{{ 'Id' | trans }}</th>
+            <th data-sortable="true">{{ 'owner.dni' | trans }}</th>
+            <th data-sortable="true">{{ 'owner.fullName' | trans }}</th>
+            <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for owner in owners %}
+            <tr>
+                  <td>{{ owner.id }}</td>
+                  <td>{{ owner.dni }}</td>
+                  <td>{{ owner.fullName }}</td>
+                  <td>
+                     <a href="{{ path('owner_show', {'owner': owner.id}) }}" data-action="click->table#onClick" data-pagination="false"><i class="fa fa-eye" title='{{ "btn.show" | trans | capitalize }}'></i></a>&nbsp;
+                     <a href="{{ path('owner_edit', {'owner': owner.id}) }}" data-action="click->table#onClick" data-pagination="false" data-ajax="false"><i class="fa fa-edit" title='{{ "btn.edit" | trans | capitalize }}'></i></a>&nbsp;
+                     <a href="{{ path('owner_delete', {'owner': owner.id}) }}" data-token="{{ csrf_token('delete' ~ owner.id) }}"
+                        data-action="click->entity#delete" 
+                        data-token="{{ csrf_token('delete' ~ owner.id) }}">
+                        <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                     <a href="{{ path('adjudication_new', {'owner': owner.id}) }}">
+                        <i class="fa fa-euro-sign" title='{{ "btn.adjudicate" | trans | capitalize }}'></i>
+                     </a>&nbsp;
+                  </td>
+            </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+</div>
+{% else %}
+   <div class="alert alert-secondary mt-3" role="alert">{{"messages.results0" | trans }}</div>
+{% endif %}
+<span class="pull-right">
+   <a href="{{ path('owner_new') }}" class="btn btn-primary rounded-circle fixed-bottom-right z-index-100">
+      <i class="fa fa-plus" title='{{ "btn.new" | trans | capitalize }}'></i>
+   </a>
+</span>
+{{ include('common/_alert.html.twig') }}
+</div>

@@ -7,7 +7,7 @@ __metadata:
 
 "@amorebietakoudala/stimulus-controller-bundle@file:vendor/amorebietakoudala/stimulus-controller-bundle/assets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.1.0
-  resolution: "@amorebietakoudala/stimulus-controller-bundle@file:vendor/amorebietakoudala/stimulus-controller-bundle/assets#vendor/amorebietakoudala/stimulus-controller-bundle/assets::hash=900425&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@amorebietakoudala/stimulus-controller-bundle@file:vendor/amorebietakoudala/stimulus-controller-bundle/assets#vendor/amorebietakoudala/stimulus-controller-bundle/assets::hash=1a7ff3&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@eonasdan/tempus-dominus": ^6.2.10
     "@hotwired/stimulus": ^3.0.0
@@ -28,7 +28,7 @@ __metadata:
     select2-bootstrap-5-theme: ^1.3.0
     sweetalert2: 11.4.8
     tableexport.jquery.plugin: ^1.26.0
-  checksum: c8c4a1fb334de1b6e23d06bb01f60a58e3c770b3bb860270148da8bfae6dc412ac9aa575bbe5c3485d07996f6e334ca62e401f4d19622b1055ca270e161b3508
+  checksum: 600a4efc8090333e1f2d6ea3daed5124b82dcd4e1d276546a9673f7602295d5fbe76cc027c9d18ad51e166287bd18205fa79cd2000f33d0204b4643c5f0a7c35
   languageName: node
   linkType: hard
 

@@ -1,0 +1,36 @@
+<div class="card" {{ stimulus_controller('petitioner-form') }}>
+    <div class="card-header h6">{{ 'label.petitioner' | trans }}</div>
+    <div class="container-fluid row align-items-center mb-1">
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.dni, { 'attr': { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'dniInput' } }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.name, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'nameInput' }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.surname1, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'surname1Input' }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.surname2, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'surname2Input' }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.telephone, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'telephoneInput' }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            {{ form_row(form.petitioner.email, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-petitioner-form-target': 'emailInput' }
+            }) }}
+        </div>
+        <div class="col-lg-auto col-md-2 col-sm-6">
+            <button class="btn btn-success" type="button" data-action="petitioner-form#clean">{{ 'btn.clean' | trans }}</button>
+        </div>
+    </div>
+</div>

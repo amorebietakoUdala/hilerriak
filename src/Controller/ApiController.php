@@ -61,7 +61,7 @@ class ApiController extends AbstractController
       }
       $owners = $this->adjudicationRepo->findByCemetery($cemetery);
       return $this->json($owners,200,[],[
-         'groups' => 'api_owner',
+         'groups' => 'api_person',
       ]);
    }
 
@@ -77,7 +77,7 @@ class ApiController extends AbstractController
    //     }
    //     $owners = $this->ownerRepo->findByFullname($fullname);
    //     return $this->json($owners,200,[],[
-   //        'groups' => 'api_owner',
+   //        'groups' => 'api_person',
    //     ]);
    //  }
 }

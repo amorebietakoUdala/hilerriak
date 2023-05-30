@@ -9,7 +9,7 @@ import 'select2/dist/js/i18n/eu.js';
 import Swal from 'sweetalert2';
 
 export default class extends Controller {
-   static targets = ['cemeteryInput', 'graveInput', 'ownerInput','addMovementInput', 'currentInput'];
+   static targets = ['cemeteryInput', 'graveInput', 'ownerInput','addMovementInput', 'registrationNumberInput'];
    static values = {
       gravesServiceUrl: String,
       ownersServiceUrl: String,
@@ -77,22 +77,22 @@ export default class extends Controller {
       }
    }
 
-   onSubmit(e) {
-      e.preventDefault();
-      const form = e.currentTarget;
-      const addMovementInput = this.addMovementInputTarget;
-      Swal.fire({
-         template: '#confirm'
-      }).then(function (result) {
-            if (result.value) {
-               addMovementInput.value = 1;
-            } else {
-               addMovementInput.value = 0;
-            }
-            form.submit();
-         });
-      return;
-   }
+   // onSubmit(e) {
+   //    e.preventDefault();
+   //    const form = e.currentTarget;
+   //    const addMovementInput = this.addMovementInputTarget;
+   //    Swal.fire({
+   //       template: '#confirm'
+   //    }).then(function (result) {
+   //          if (result.value) {
+   //             addMovementInput.value = 1;
+   //          } else {
+   //             addMovementInput.value = 0;
+   //          }
+   //          form.submit();
+   //       });
+   //    return;
+   // }
 
    // async onKeyPress(event) {
    //    let dni = $(event.currentTarget).val();
@@ -147,8 +147,8 @@ export default class extends Controller {
          $(this.ownerInputTarget).val('');
          $(this.ownerInputTarget).trigger('change');
       }
-      if (this.hasCurrentInputTarget) {
-         $(this.currentInputTarget).val('');
+      if (this.hasRegistrationNumberInputTarget) {
+         $(this.registrationNumberInputTarget).val('');
       }
       this.search(event);
    }

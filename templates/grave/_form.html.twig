@@ -15,11 +15,11 @@
             <div class="col-lg-2 col-md-2 col-sm-6">
                 {{ form_row(form.code, { 'attr': { 'class' : 'form-control form-control-sm' } }) }}
             </div>
-            {# <div class="col-lg-2 col-md-2 col-sm-6">
+            <div class="col-lg-2 col-md-2 col-sm-6">
                 {{ form_row(form.description, { 'attr': 
                     { 'class' : 'form-control form-control-sm' }
                 }) }}
-            </div> #}
+            </div>
             <div class="col-lg-2 col-md-2 col-sm-6">
                 {{ form_row(form.years, { 'attr': 
                     { 'class' : 'form-control form-control-sm' }
@@ -30,22 +30,24 @@
                     { 'class' : 'form-select form-select-sm' }
                 }) }}
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-6">
-                {{ form_row(form.free) }}
-            </div>
         </div>
-        {# <div class="row align-items-center mb-1">
+        <div class="row align-items-center mb-1">
             <div class="col-lg-2 col-md-2 col-sm-6">
-                {{ form_row(form.expedientCreationYear, { 'attr': 
+                {{ form_row(form.capacity, { 'attr': 
                     { 'class' : 'form-control form-control-sm' }
                 }) }}
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-6">
-                {{ form_row(form.registrationNumber, { 'attr': 
-                    { 'class' : 'form-control form-control-sm' }
-                }) }}
-            </div>
-        </div> #}
+            {% if not new %}
+                <div class="col-lg-1 col-md-2 col-sm-6">
+                    {{ form_row(form.occupation, { 'attr': 
+                        { 'class' : 'form-control form-control-sm' }
+                    }) }}
+                </div>
+                <div class="col-lg-1 col-md-2 col-sm-6">
+                    {{ form_row(form.free) }}
+                </div>
+            {% endif %}
+        </div>
         <div class="row mt-2 mb-5 justify-content-center">
             {% if readonly == false %}
                 <div class="col-auto">
@@ -53,7 +55,7 @@
                 </div>
             {% endif %}
             <div class="col-auto">
-                <a href="{{ returnUrl is defined and not returnUrl is empty ? returnUrl : path('owner_index') }}" class="btn btn-secondary">{{ 'btn.cancel' | trans }}</a>
+                <a href="{{ returnUrl is defined and not returnUrl is empty ? returnUrl : path('grave_index') }}" class="btn btn-secondary">{{ 'btn.cancel' | trans }}</a>
             </div>
         </div>
     </div>

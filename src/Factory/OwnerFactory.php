@@ -44,8 +44,6 @@ final class OwnerFactory extends ModelFactory
         $surname2 = self::faker()->lastName();
         $fullName = "$name $surname1 $surname2";
         $dni = self::faker()->numberBetween(0,99999999).strtoupper(self::faker()->randomLetter());
-        // $creationYear = self::faker()->year('-100 years');
-        // $expedientNumber = self::faker()->numberBetween(0,5000).'/'.self::faker()->numberBetween(2000,2023);
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'dni' => $dni,
@@ -54,9 +52,6 @@ final class OwnerFactory extends ModelFactory
             'surname2' => $surname2,
             'fullname' => $fullName,
             'telephone' => self::faker()->e164PhoneNumber(),
-            // 'expedientNumber' => $expedientNumber,
-            // 'registrationNumber' => self::faker()->numberBetween(0,5000),
-            // 'creationYear' => $creationYear,
             'createdAt' => new DateTime(),
             'updatedAt' => new DateTime(),
         ];

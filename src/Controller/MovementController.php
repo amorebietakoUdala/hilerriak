@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Adjudication;
 use App\Entity\DestinationType;
+use App\Entity\GraveType;
 use App\Entity\Movement;
 use App\Entity\MovementType;
+use App\Entity\Petitioner;
 use App\Form\MovementFormType;
 use App\Form\MovementSearchFormType;
 use App\Repository\AdjudicationRepository;
@@ -12,6 +15,7 @@ use App\Repository\DestinationTypeRepository;
 use App\Repository\GraveRepository;
 use App\Repository\MovementRepository;
 use App\Repository\MovementTypeRepository;
+use App\Repository\PetitionerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
@@ -33,6 +37,7 @@ class MovementController extends BaseController
     private DestinationTypeRepository $destinationTypeRepo;
     private GraveRepository $graveRepo;
     private MailerInterface $mailer;
+    private PetitionerRepository $petitionerRepo;
 
     public function __construct(
         EntityManagerInterface $em, 
@@ -41,7 +46,8 @@ class MovementController extends BaseController
         DestinationTypeRepository $destinationTypeRepo, 
         GraveRepository $graveRepo, 
         MailerInterface $mailer,
-        AdjudicationRepository $adjudicationRepo
+        AdjudicationRepository $adjudicationRepo,
+        PetitionerRepository $petitionerRepo
     )
     {
         $this->em = $em;
@@ -51,6 +57,7 @@ class MovementController extends BaseController
         $this->graveRepo = $graveRepo;
         $this->mailer = $mailer;
         $this->adjudicationRepo = $adjudicationRepo;
+        $this->petitionerRepo = $petitionerRepo;
     }
 
     /**
@@ -63,8 +70,11 @@ class MovementController extends BaseController
         $movement = new Movement();
         if ($adjudicationId) {
             $adjudication = $this->adjudicationRepo->find($adjudicationId);
+            $movement->setRegistrationNumber($adjudication->getRegistrationNumber());
             $movement->setDestinationType($this->destinationTypeRepo->find(DestinationType::DESTINATION_TYPE_GRAVE));
             $movement->setDestination($adjudication->getGrave());
+            $petitioner = $this->fillPetitionerFromAdjudication($adjudication);
+            $movement->setPetitioner($petitioner);
         }
         $form = $this->createForm(MovementFormType::class, $movement,[
             'locale' => $request->getLocale(),
@@ -75,6 +85,11 @@ class MovementController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Movement $data */
             $data = $form->getData();
+            $dni = $data->getPetitioner()->getDni();
+            $petitioner = $this->petitionerRepo->findOneBy(['dni' => $dni]);
+            if ($petitioner !== null) {
+                $data->setPetitioner($petitioner);
+            }
             $error = $this->checkErrors($data);
             if ($error) {
                 return $this->renderTemplate($request,'_form.html.twig' , 'edit.html.twig', $form, [
@@ -144,9 +159,8 @@ class MovementController extends BaseController
             $data = $form->getData();
             $data->setYear(($data->getDeceaseDate())->format('Y'));
             if (!$isFinalized && $data->isFinalized()) {
-                // Movement finished so grave we must update Graves
+                // Movement finished so grave we must update Graves ocupation
                 $this->updateGraves($data);
-                // TODO Send message to bulego teknikoa
                 $this->sendMessage(
                     'Hurrengo mugimendua bukatu egin da / El siguiente movimiento se ha finalizado', 
                     [$this->getParameter('mailer_technical_office')], 
@@ -154,6 +168,7 @@ class MovementController extends BaseController
                     'movement/movementFinishedMail.html.twig'
                 );
             }
+            $data->setMovementEndDate(new \DateTime());
             $this->em->persist($data);
             $this->em->flush();
             $this->addFlash('success', 'messages.movementSaved');
@@ -189,7 +204,7 @@ class MovementController extends BaseController
     public function index(Request $request) {
         $this->loadQueryParameters($request);
         $criteria = $request->query->all();
-        unset($criteria['page'],$criteria['pageSize'],$criteria['sortName'],$criteria['sortOrder'],$criteria['adjudication']);
+        unset($criteria['page'],$criteria['pageSize'],$criteria['sortName'],$criteria['sortOrder'],$criteria['adjudication'],$criteria['ajax']);
         $movementSearchForm = $this->loadSearchForm($criteria);
         $movements = [];
         $form = $this->createForm(MovementSearchFormType::class, $movementSearchForm,[
@@ -219,42 +234,41 @@ class MovementController extends BaseController
     }
 
     private function updateGraves(Movement $movement) {
-        // TODO Sometimes it may depend on grave type.
-        if ($movement->getType() === MovementType::MOVEMENT_TYPE_INHUMATION) {
-            $destination = $movement->getDestination();
-            $destination->setFree(false);
-            $this->em->persist($destination);
-            return;
-        }
-        if ($movement->getType() === MovementType::MOVEMENT_TYPE_EXHUMATION) {
-            $source = $movement->getSource();
-            $source->setFree(true);
-            $this->em->persist($source);
-            return;
-        }
-        if ($movement->getType() === MovementType::MOVEMENT_TYPE_INCINERATION || MovementType::MOVEMENT_TYPE_TRANSFER) {
+        // if ($movement->getType() === MovementType::MOVEMENT_TYPE_INHUMATION) {
+        //     $destination = $movement->getDestination();
+        //     $destination->addOccupation();
+        //     $this->em->persist($destination);
+        //     return;
+        // }
+        // if ($movement->getType() === MovementType::MOVEMENT_TYPE_EXHUMATION) {
+        //     $source = $movement->getSource();
+        //     $source->removeOccupation();
+        //     $this->em->persist($source);
+        //     return;
+        // }
+        // if ($movement->getType() === MovementType::MOVEMENT_TYPE_ASHES_DEPOSITATION || MovementType::MOVEMENT_TYPE_TRANSFER) {
             $destination = $movement->getDestination();
             $source = $movement->getSource();
             if ($destination !== null) {
-                $destination->setFree(false);
+                $destination->addOccupation();
                 $this->em->persist($destination);
             }
             if ($source !== null) {
-                $source->setFree(true);
+                $source->removeOccupation();
                 $this->em->persist($source);
             }
-            return;
-        }
+        //     return;
+        // }
         return;
     }
 
     private function sendMessage($subject, array $to, Movement $movement, $template = null)
     {
-
+        $test = $this->getParameter('test_environment');
         $email = (new Email())
             ->from($this->getParameter('mailer_from'))
             ->to(...$to)
-            ->subject($subject);
+            ->subject($test ? 'TEST-'.$subject: $subject);
         if ($template) {
             $email->html($this->renderView($template, [
                 'movement' => $movement,
@@ -285,6 +299,16 @@ class MovementController extends BaseController
             $this->addFlash('error','messages.graveRequired');
             return true;
         }
+        $destination = $movement->getDestination();
+        if ( $destination !== null && $destination->getType()->getId() === GraveType::ASHES && 
+             $destination->getCapacity() === $destination->getOccupation() ) {
+            $this->addFlash('error','messages.destinationIsFull');
+            return true;
+        }
+        if ( $destination !== null && count($destination->getAdjudications()) === 0 ) {
+            $this->addFlash('error','messages.destinationNotAdjudicated');
+            return true;
+        }
         return false;
     }
 
@@ -307,5 +331,10 @@ class MovementController extends BaseController
         return $this->renderForm('movement/' . $template, array_merge([
             'form' => $form,
         ], $parameters),  new Response(null, $form->isSubmitted() && ( !$form->isValid() )? 422 : 200));        
+    }
+
+    private function fillPetitionerFromAdjudication(Adjudication $adjudication) {
+        $owner = $adjudication->getOwner();
+        return Petitioner::createPetitioner($owner);
     }
 }

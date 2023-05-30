@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MovementType
 {
-    const MOVEMENT_TYPE_INCINERATION = 1;
+    const MOVEMENT_TYPE_ASHES_DEPOSITATION = 1;
     const MOVEMENT_TYPE_INHUMATION = 2;
     const MOVEMENT_TYPE_EXHUMATION = 3;
     const MOVEMENT_TYPE_TRANSFER = 4;

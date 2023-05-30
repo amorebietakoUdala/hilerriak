@@ -30,11 +30,6 @@
             }) }}
         </div>
         <div class="col-lg-2 col-md-2 col-sm-6">
-            {{ form_row(form.expedientNumber, { 'attr': 
-                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'expedientNumberInput' }
-            }) }}
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-6">
             {{ form_row(form.registrationNumber, { 'attr': 
                 { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'registrationNumberInput'}
             }) }}
@@ -56,11 +51,19 @@
                 { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctSurname2Input' }
             }) }}
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-6">
-            {{ form_row(form.deceaseDate, { 'attr': { 
+        <div class="col-lg col-md-2 col-sm-6">
+            {{ form_row(form.deceaseDateFrom, { 'attr': { 
                     'class' : 'form-control form-control-sm', 
                     'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
-                    'data-movement-search-form-target': 'deceaseDateInput' 
+                    'data-movement-search-form-target': 'deceaseDateFromInput' 
+                }
+            }) }}
+        </div>
+        <div class="col-lg col-md-2 col-sm-6">
+            {{ form_row(form.deceaseDateTo, { 'attr': { 
+                    'class' : 'form-control form-control-sm', 
+                    'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
+                    'data-movement-search-form-target': 'deceaseDateToInput' 
                 }
             }) }}
         </div>

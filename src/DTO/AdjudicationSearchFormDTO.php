@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\DTO;
 
 use App\Entity\Cemetery;
 use App\Entity\Grave;
@@ -12,7 +12,7 @@ class AdjudicationSearchFormDTO
    private ?Cemetery $cemetery = null;
    private ?Owner $owner = null;
    private ?Grave $grave = null;
-   private ?bool $current = null;
+   private ?bool $expired = null;
 
    public function getCemetery(): ?Cemetery
    {
@@ -56,11 +56,10 @@ class AdjudicationSearchFormDTO
       $cemetery = isset($criteria['cemetery']) ? $criteria['cemetery'] : null; 
       $owner = isset($criteria['owner']) ? $criteria['owner'] : null; 
       $grave = isset($criteria['grave']) ? $criteria['grave'] : null; 
-      $current = isset($criteria['current']) ? $criteria['current'] : null; 
+      $expired = isset($criteria['expired']) ? $criteria['expired'] : null; 
       $filter->setCemetery($cemetery);
       $filter->setOwner($owner);
       $filter->setGrave($grave);
-      $filter->setCurrent($current);
       return $filter;
    }
 
@@ -70,18 +69,18 @@ class AdjudicationSearchFormDTO
       $array['cemetery'] = $this->cemetery;
       $array['owner'] = $this->owner;
       $array['grave'] = $this->grave;
-      $array['current'] = $this->current;
+      $array['expired'] = $this->expired;
       return $array;
    }
 
-   public function getCurrent(): ?bool
+   public function getExpired(): ?bool
    {
-      return $this->current;
+      return $this->expired;
    }
 
-   public function setCurrent($current): self
+   public function setExpired(?bool $expired) : self
    {
-      $this->current = $current;
+      $this->expired = $expired;
 
       return $this;
    }
