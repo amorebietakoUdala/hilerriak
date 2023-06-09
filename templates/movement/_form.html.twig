@@ -12,6 +12,7 @@
             <div class="container row align-items-center mb-1"  {{ stimulus_controller('movement-form',{
                 'locale': app.request.locale,
                 'destinationTypeGrave': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_GRAVE'),
+                'destinationTypeZyncBox': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_ZINC_BOX'),
                 'exhumationType': constant('App\\Entity\\MovementType::MOVEMENT_TYPE_EXHUMATION'),
             })}}>
                 <div class="col-lg-2 col-md-2 col-sm-6">
@@ -32,7 +33,7 @@
                         { 'class' : 'form-select form-select-sm', 'data-movement-form-target': 'destinationTypeInput', 'data-action': 'movement-form#onDestinationTypeChange' }
                     }) }}
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-6 {{ form.destinationType.vars.value != "1" ? 'd-none' : '' }}" data-movement-form-target="destinationRow">
+                <div class="col-lg-3 col-md-2 col-sm-6 {{ form.destinationType.vars.value != "1" and form.destinationType.vars.value != "2" ? 'd-none' : '' }}" data-movement-form-target="destinationRow">
                     {{ form_row(form.destination, { 'attr': 
                         { 'class' : 'form-select form-select-sm', 'data-movement-form-target': 'destinationInput' }
                     }) }}
@@ -62,6 +63,13 @@
                         { 'class' : 'form-control form-control-sm' }
                     }) }}
                 </div>
+                <div class="col-lg-3 col-md-2 col-sm-6">
+                    {{ form_row(form.defunctFullname, { 'attr': 
+                        { 'class' : 'form-control form-control-sm' }
+                    }) }}
+                </div>
+            </div>
+            <div class="container row align-items-center mb-1">
                 <div class="col-lg-3 col-md-2 col-sm-6">
                     {{ form_row(form.deceaseDate, { 'attr': 
                         { 'class' : 'form-control form-control-sm', 'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd' }

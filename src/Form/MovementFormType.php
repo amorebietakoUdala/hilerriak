@@ -27,12 +27,13 @@ class MovementFormType extends AbstractType
             ->add('petitioner', PetitionerFormType::class, [
                 'label' => false,
                 'readonly' => $readonly,
+                'new' => $new,
             ])
             ->add('type', EntityType::class,[
                 'class' => MovementType::class,
                 'label' => 'movement.type',
                 'disabled' => $readonly,
-                'required' => true,
+                'required' => !$new ? false : true,
                 'choice_label' => function (MovementType $movementType) use ($locale) {
                     return $movementType->getDescription($locale);
                 }                
@@ -51,7 +52,7 @@ class MovementFormType extends AbstractType
                 'class' => DestinationType::class,
                 'label' => 'movement.destinationType',
                 'disabled' => $readonly,
-                'required' => true,
+                'required' => !$new ? false : true,
                 'placeholder' => 'label.choose',
                 'choice_label' => function (DestinationType $destinationType) use ($locale) {
                     return $destinationType->getDescription($locale);
@@ -93,6 +94,11 @@ class MovementFormType extends AbstractType
             ->add('defunctSurname2', null,[
                 'label' => 'movement.defunctSurname2',
                 'disabled' => $readonly,
+                'required' => false,
+            ])
+            ->add('defunctFullname', null,[
+                'label' => 'movement.defunctFullname',
+                'disabled' => true,
                 'required' => false,
             ])
             ->add('relationship', null,[

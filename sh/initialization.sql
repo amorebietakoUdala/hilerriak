@@ -4,8 +4,8 @@ LIMIT 0, 1000
 
 -- Date: 2023-04-21 07:51
 */
-INSERT INTO `cemetery` (`id`,`name`) VALUES (1,'Leginetxe');
-INSERT INTO `cemetery` (`id`,`name`) VALUES (2,'Etxano');
+INSERT INTO `cemetery` (`id`,`name`) VALUES (1,'Etxano');
+INSERT INTO `cemetery` (`id`,`name`) VALUES (2,'Leginetxe');
 
 /*
 -- Query: SELECT * FROM hilerriak.grave_type

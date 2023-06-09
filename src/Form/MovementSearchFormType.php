@@ -68,31 +68,21 @@ class MovementSearchFormType extends AbstractType
                     new Positive(),
                 ]
             ])
-            ->add('defunctName', null,[
-                'label' => 'movement.defunctName',
+            ->add('defunctFullname', null,[
+                'label' => 'movement.defunctFullname',
                 'disabled' => $readonly,
                 'required' => false,
             ])
-            ->add('defunctSurname1', null,[
-                'label' => 'movement.defunctSurname1',
-                'disabled' => $readonly,
-                'required' => false,
-            ])
-            ->add('defunctSurname2', null,[
-                'label' => 'movement.defunctSurname2',
-                'disabled' => $readonly,
-                'required' => false,
-            ])
-            ->add('deceaseDateFrom', DateType::class, [
-                'label' => 'movement.deceaseDateFrom',
+            ->add('movementDateFrom', DateType::class, [
+                'label' => 'movement.movementDateFrom',
                 'disabled' => $readonly,
                 'widget' => 'single_text',
                 'html5' => false,
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ])
-            ->add('deceaseDateTo', DateType::class, [
-                'label' => 'movement.deceaseDateTo',
+            ->add('movementDateTo', DateType::class, [
+                'label' => 'movement.movementDateTo',
                 'disabled' => $readonly,
                 'widget' => 'single_text',
                 'html5' => false,

@@ -67,6 +67,7 @@ class MovementController extends BaseController
     {
         $this->loadQueryParameters($request);
         $adjudicationId = $request->get('adjudication');
+        $movementId = $request->get('movement');
         $movement = new Movement();
         if ($adjudicationId) {
             $adjudication = $this->adjudicationRepo->find($adjudicationId);
@@ -75,7 +76,11 @@ class MovementController extends BaseController
             $movement->setDestination($adjudication->getGrave());
             $petitioner = $this->fillPetitionerFromAdjudication($adjudication);
             $movement->setPetitioner($petitioner);
-        }
+        } else if ($movementId) {
+            $originalMovement = $this->repo->find($movementId);
+            $movement->setDestinationType($originalMovement->getDestinationType());
+            $movement->setDestination($originalMovement->getDestination());
+        }        
         $form = $this->createForm(MovementFormType::class, $movement,[
             'locale' => $request->getLocale(),
             'new' => true,

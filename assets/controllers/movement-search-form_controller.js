@@ -16,8 +16,8 @@ export default class extends Controller {
       'defunctNameInput', 
       'defunctSurname1Input', 
       'defunctSurname2Input', 
-      'deceaseDateFromInput',
-      'deceaseDateToInput',
+      'movementDateFromInput',
+      'movementDateToInput',
       'finalizedInput',
    ];
    static values = {
@@ -68,11 +68,11 @@ export default class extends Controller {
       if ( this.hasDefunctSurname2InputTarget ) {
          this.defunctSurname2InputTarget.value='';
       }
-      if ( this.hasDeceaseDateFromInputTarget ) {
-         this.deceaseDateFromInputTarget.value='';
+      if ( this.hasMovementDateFromInputTarget ) {
+         this.movementFromInputTarget.value='';
       }
-      if ( this.hasDeceaseDateToInputTarget ) {
-         this.deceaseDateToInputTarget.value='';
+      if ( this.hasMovementDateToInputTarget ) {
+         this.movementDateToInputTarget.value='';
       }
       if ( this.hasFinalizedInputTarget ) {
          this.finalizedInputTarget.value='';

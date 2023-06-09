@@ -11,6 +11,7 @@ export default class extends Controller {
    static values = {
       locale: String,
       destinationTypeGrave: Number,
+      destinationTypeZyncBox: Number,
       exhumationType: Number,
    };
 
@@ -42,7 +43,7 @@ export default class extends Controller {
    onDestinationTypeChange(e) {
       e.preventDefault();
       const destinationType = e.currentTarget;
-      if (destinationType.value == this.destinationTypeGraveValue) {
+      if (destinationType.value == this.destinationTypeGraveValue || destinationType.value == this.destinationTypeZyncBoxValue ) {
          this.destinationRowTarget.classList.remove('d-none');
       } else {
          this.destinationRowTarget.classList.add('d-none');

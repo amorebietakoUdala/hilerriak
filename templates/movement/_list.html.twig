@@ -16,7 +16,7 @@
          <th data-sortable="true">{{ 'movement.source' | trans }}</th>
          <th data-sortable="true">{{ 'movement.destination' | trans }}</th>
          <th data-sortable="true">{{ 'movement.registrationNumber' | trans }}</th>
-         <th data-sortable="true">{{ 'list.deceaseDate' | trans }}</th>
+         <th data-sortable="true">{{ 'list.movementDate' | trans }}</th>
          <th data-sortable="true">{{ 'movement.defunctFullname' | trans }}</th>
          <th data-sortable="true">{{ 'movement.finalized' | trans }}</th>
          <th data-sortable="true" data-field="options">{{"table.options" | trans }}</th>
@@ -38,8 +38,8 @@
                   {% endif %}
                </td>
                <td>{{ movement.registrationNumber }}</td>
-               <td>{{ movement.deceaseDate | date('Y-m-d') }}</td>
-               <td>{{ movement.defunctFullName }}</td>
+               <td>{{ movement.movementEndDate | date('Y-m-d') }}</td>
+               <td>{{ movement.defunctFullname }}</td>
                <td>{{ movement.finalized ? 'label.yes' | trans : 'label.no' | trans }}</td>
                <td>
                   <a href="{{ path('movement_show', {'movement': movement.id}) }}" data-action="click->table#onClick" data-pagination="false">
@@ -52,6 +52,9 @@
                      data-action="click->entity#delete" 
                      data-token="{{ csrf_token('delete' ~ movement.id) }}">
                      <i class="fa fa-trash" title='{{ "btn.delete" | trans | capitalize }}'></i>
+                  </a>&nbsp;
+                  <a href="{{ path('movement_new', {'movement': movement.id}) }}" data-action="click->table#onClick" data-pagination="false" data-return-url="{{ absolute_url(path('movement_index')) }}">
+                     <i class="fa fa-hand-point-left" title='{{ "btn.newMovementToDestination" | trans | capitalize }}'></i>
                   </a>&nbsp;
                </td>
          </tr>

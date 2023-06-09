@@ -45,19 +45,20 @@ class MovementRepository extends ServiceEntityRepository
     public function findByCriteria($criteria, $orderBy = null, $limit = null, $offset = null): array
     {
         $criteriaLikeKeys = [
-            'defunctName' => null,
-            'defunctSurname1' => null,
-            'defunctSurname2' => null,
+            // 'defunctName' => null,
+            // 'defunctSurname1' => null,
+            // 'defunctSurname2' => null,
+            'defunctFullname' => null,
         ];
         $criteriaLike = $criteriaAnd = null;
         if ( $criteria !== null ) {
             $criteriaLike = array_intersect_key($criteria,$criteriaLikeKeys);
             $criteriaAnd = array_diff_key($criteria,$criteriaLikeKeys);
         }
-        $from = isset($criteriaAnd['deceaseDateFrom']) ? $criteriaAnd['deceaseDateFrom'] : null;
-        unset($criteriaAnd['deceaseDateFrom']);
-        $to = isset($criteriaAnd['deceaseDateTo']) ? $criteriaAnd['deceaseDateTo'] : null;
-        unset($criteriaAnd['deceaseDateTo']);
+        $from = isset($criteriaAnd['movementDateFrom']) ? $criteriaAnd['movementDateFrom'] : null;
+        unset($criteriaAnd['movementDateFrom']);
+        $to = isset($criteriaAnd['movementDateTo']) ? $criteriaAnd['movementDateTo'] : null;
+        unset($criteriaAnd['movementDateTo']);
         $qb = $this->createQueryBuilder('m');
 
         if ( $criteriaAnd ) {
@@ -73,12 +74,12 @@ class MovementRepository extends ServiceEntityRepository
             }
         }
         if ($from) {
-            $qb->andWhere('m.deceaseDate >= :deceaseDateFrom')
-            ->setParameter('deceaseDateFrom', $from);
+            $qb->andWhere('m.movementEndDate >= :movementDateFrom')
+            ->setParameter('movementDateFrom', $from);
         }
         if ($to) {
-            $qb->andWhere('m.deceaseDate <= :deceaseDateTo')
-            ->setParameter('deceaseDateTo', $to);
+            $qb->andWhere('m.movementEndDate <= :movementDateTo')
+            ->setParameter('movementDateTo', $to);
         }
         $qb->orderBy('m.id', 'DESC');
         $qb->setMaxResults($limit);

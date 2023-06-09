@@ -36,34 +36,24 @@
         </div>
     </div>
     <div class="row align-items-center mb-1">
-        <div class="col-lg-2 col-md-2 col-sm-6">
-            {{ form_row(form.defunctName, { 'attr': 
-                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctNameInput' }
+        <div class="col-lg-3 col-md-2 col-sm-6">
+            {{ form_row(form.defunctFullname, { 'attr': 
+                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctFullnameInput' }
             }) }}
         </div>
         <div class="col-lg-2 col-md-2 col-sm-6">
-            {{ form_row(form.defunctSurname1, { 'attr': 
-                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctSurname1Input' }
-            }) }}
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-6">
-            {{ form_row(form.defunctSurname2, { 'attr': 
-                { 'class' : 'form-control form-control-sm', 'data-movement-search-form-target': 'defunctSurname2Input' }
-            }) }}
-        </div>
-        <div class="col-lg col-md-2 col-sm-6">
-            {{ form_row(form.deceaseDateFrom, { 'attr': { 
+            {{ form_row(form.movementDateFrom, { 'attr': { 
                     'class' : 'form-control form-control-sm', 
                     'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
-                    'data-movement-search-form-target': 'deceaseDateFromInput' 
+                    'data-movement-search-form-target': 'movementDateFromInput' 
                 }
             }) }}
         </div>
-        <div class="col-lg col-md-2 col-sm-6">
-            {{ form_row(form.deceaseDateTo, { 'attr': { 
+        <div class="col-lg-2 col-md-2 col-sm-6">
+            {{ form_row(form.movementDateTo, { 'attr': { 
                     'class' : 'form-control form-control-sm', 
                     'data-controller' : 'datetimepicker', 'data-datetimepicker-format-value': 'yyyy-MM-dd', 
-                    'data-movement-search-form-target': 'deceaseDateToInput' 
+                    'data-movement-search-form-target': 'movementDateToInput' 
                 }
             }) }}
         </div>

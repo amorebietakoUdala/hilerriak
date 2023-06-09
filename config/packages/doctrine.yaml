@@ -2,7 +2,10 @@ doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
         # This is to ignore imported tables from schema modifications
-        schema_filter: ~^(?!(Adjudicación|Adjudicación2|Histórico_Adjudicación|Histórico_Adjudicación2|Registro|Registro2|Sepultura|Sepultura2|Titular|Titular2)$)~
+        schema_filter: ~^(?!(Adjudicación1|Adjudicación2|Histórico_Adjudicación1|Histórico_Adjudicación2|Registro1|Registro2|Sepultura1|Sepultura2|Titular1|Titular2)$)~
+        charset: utf8mb4
+        default_table_options:
+            collate: utf8mb4_spanish2_ci        
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

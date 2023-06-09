@@ -6,14 +6,12 @@
 -- Check out http://mdbtools.sourceforge.net
 -- ----------------------------------------------------------
 
-DROP TABLE IF EXISTS `Adjudicación`;
-DROP TABLE IF EXISTS `Histórico_Adjudicación`;
-DROP TABLE IF EXISTS `Titular`;
-DROP TABLE IF EXISTS `Sepultura`;
-DROP TABLE IF EXISTS `Registro`;
+DROP TABLE IF EXISTS `Adjudicación1`;
+DROP TABLE IF EXISTS `Titular1`;
+DROP TABLE IF EXISTS `Sepultura1`;
+DROP TABLE IF EXISTS `Registro1`;
 
 DROP TABLE IF EXISTS `Adjudicación2`;
-DROP TABLE IF EXISTS `Histórico_Adjudicación2`;
 DROP TABLE IF EXISTS `Titular2`;
 DROP TABLE IF EXISTS `Sepultura2`;
 DROP TABLE IF EXISTS `Registro2`;
@@ -25,7 +23,7 @@ DROP TABLE IF EXISTS `Registro2`;
 
 -- That file uses encoding UTF-8
 
-CREATE TABLE IF NOT EXISTS `Adjudicación`
+CREATE TABLE IF NOT EXISTS `Adjudicación1`
  (
 	`Fecha_Registro`			datetime, 
 	`Año_Alta`			varchar (4), 
@@ -39,41 +37,17 @@ CREATE TABLE IF NOT EXISTS `Adjudicación`
 	`Cambio_titular`			boolean NOT NULL, 
 	`N_Expediente`			varchar (50), 
 	`Registro`			double, 
-	`Id`			int not null auto_increment unique
-);
+	`Id`			int
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
-ALTER TABLE `Adjudicación` ADD INDEX `ADJUDICACION_NICHOTitular_Adjudicacion` (`Titular`);
-ALTER TABLE `Adjudicación` ADD INDEX `AdjudicaciónLocalizacion_adjudicacion` (`Localizacion`);
-ALTER TABLE `Adjudicación` ADD INDEX `ArchivoRegistro` (`Registro`);
--- ALTER TABLE `Adjudicación` ADD INDEX `Id` (`Id_adjudicacion`);
-ALTER TABLE `Adjudicación` ADD PRIMARY KEY (`Id`);
+ALTER TABLE `Adjudicación1` ADD INDEX `ADJUDICACION_NICHOTitular_Adjudicacion` (`Titular`);
+ALTER TABLE `Adjudicación1` ADD INDEX `AdjudicaciónLocalizacion_adjudicacion` (`Localizacion`);
+ALTER TABLE `Adjudicación1` ADD INDEX `ArchivoRegistro` (`Registro`);
+-- ALTER TABLE `Adjudicación1` ADD INDEX `Id` (`Id_adjudicacion`);
+-- ALTER TABLE `Adjudicación1` ADD PRIMARY KEY (`Id`);
 
-CREATE TABLE IF NOT EXISTS `Histórico_Adjudicación`
- (
-	`Fecha_Registro`			datetime, 
-	`Año_Alta`			varchar (4), 
-	`Titular`			varchar (65), 
-	`Titular_02`			varchar (50), 
-	`Localizacion`			varchar (65), 
-	`Descripcion`			varchar (65), 
-	`Fecha_Caduc`			varchar (4), 
-	`Renovado`			boolean NOT NULL, 
-	`Prescito`			boolean NOT NULL, 
-	`Cambio_titular`			boolean NOT NULL, 
-	`N_Expediente`			varchar (50), 
-	`Registro`			double, 
-	`Id`			int not null auto_increment unique
-);
-
--- CREATE INDEXES ...
-ALTER TABLE `Histórico_Adjudicación` ADD INDEX `ADJUDICACION_NICHOTitular_historico_Adjudicacion` (`Titular`);
-ALTER TABLE `Histórico_Adjudicación` ADD INDEX `AdjudicaciónLocalizacion_historico_adjudicacion` (`Localizacion`);
-ALTER TABLE `Histórico_Adjudicación` ADD INDEX `ArchivoRegistro` (`Registro`);
--- ALTER TABLE `Histórico_Adjudicación` ADD INDEX `Id` (`Id_historico_adjudicacion`);
-ALTER TABLE `Histórico_Adjudicación` ADD PRIMARY KEY (`Id`);
-
-CREATE TABLE IF NOT EXISTS `Sepultura`
+CREATE TABLE IF NOT EXISTS `Sepultura1`
  (
 	`Descripcion`			text, 
 	`Vigencia`			varchar (10), 
@@ -84,14 +58,14 @@ CREATE TABLE IF NOT EXISTS `Sepultura`
 	`Id`			int not null auto_increment unique, 
 	`Cementerio`			varchar (50), 
 	`Tipo`			varchar (50)
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
-ALTER TABLE `Sepultura` ADD INDEX `ArchivoRegistro` (`Registro`);
--- ALTER TABLE `Sepultura` ADD INDEX `Id` (`Id_sepultura`);
-ALTER TABLE `Sepultura` ADD PRIMARY KEY (`Localizacion`);
+ALTER TABLE `Sepultura1` ADD INDEX `ArchivoRegistro` (`Registro`);
+-- ALTER TABLE `Sepultura1` ADD INDEX `Id` (`Id_sepultura`);
+ALTER TABLE `Sepultura1` ADD PRIMARY KEY (`Localizacion`);
 
-CREATE TABLE IF NOT EXISTS `Titular`
+CREATE TABLE IF NOT EXISTS `Titular1`
  (
 	`N_Expediente`			varchar (50), 
 	`Año_Alta`			varchar (4), 
@@ -100,15 +74,15 @@ CREATE TABLE IF NOT EXISTS `Titular`
 	`DNI`			varchar (12), 
 	`Telefono`			int, 
 	`Id`			int not null auto_increment unique
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
-ALTER TABLE `Titular` ADD INDEX `ADJUDICACION_NICHOTitular` (`Titular`);
-ALTER TABLE `Titular` ADD INDEX `ArchivoRegistro` (`Registro`);
--- ALTER TABLE `Titular` ADD INDEX `Id` (`Id_titular`);
-ALTER TABLE `Titular` ADD PRIMARY KEY (`Titular`);
+ALTER TABLE `Titular1` ADD INDEX `ADJUDICACION_NICHOTitular` (`Titular`);
+ALTER TABLE `Titular1` ADD INDEX `ArchivoRegistro` (`Registro`);
+-- ALTER TABLE `Titular1` ADD INDEX `Id` (`Id_titular`);
+ALTER TABLE `Titular1` ADD PRIMARY KEY (`Titular`);
 
-CREATE TABLE IF NOT EXISTS `Registro`
+CREATE TABLE IF NOT EXISTS `Registro1`
  (
 	`Id`			int not null auto_increment unique, 
 	`Nº_Registro`			int, 
@@ -121,10 +95,10 @@ CREATE TABLE IF NOT EXISTS `Registro`
 	`Origen restos`			varchar (50), 
 	`N_Expediente`			varchar (50), 
 	`Incidencias`			varchar (75)
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
-ALTER TABLE `Registro` ADD PRIMARY KEY (`Id`);
+ALTER TABLE `Registro1` ADD PRIMARY KEY (`Id`);
 
 -- ----------------------------------------------------------
 -- LEGINETXE
@@ -146,39 +120,15 @@ CREATE TABLE IF NOT EXISTS `Adjudicación2`
 	`Cambio_titular`			boolean NOT NULL, 
 	`N_Expediente`			varchar (50), 
 	`Registro`			double, 
-	`Id`			int not null auto_increment unique
-);
+	`Id`			int
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
 ALTER TABLE `Adjudicación2` ADD INDEX `ADJUDICACION_NICHOTitular_Adjudicacion2` (`Titular`);
 ALTER TABLE `Adjudicación2` ADD INDEX `AdjudicaciónLocalizacion_adjudicacion2` (`Localizacion`);
 ALTER TABLE `Adjudicación2` ADD INDEX `ArchivoRegistro2` (`Registro`);
--- ALTER TABLE `Adjudicación` ADD INDEX `Id` (`Id_adjudicacion`);
-ALTER TABLE `Adjudicación2` ADD PRIMARY KEY (`Id`);
-
-CREATE TABLE IF NOT EXISTS `Histórico_Adjudicación2`
- (
-	`Fecha_Registro`			datetime, 
-	`Año_Alta`			varchar (4), 
-	`Titular`			varchar (65), 
-	`Titular_02`			varchar (50), 
-	`Localizacion`			varchar (65), 
-	`Descripcion`			varchar (65), 
-	`Fecha_Caduc`			varchar (4), 
-	`Renovado`			boolean NOT NULL, 
-	`Prescito`			boolean NOT NULL, 
-	`Cambio_titular`			boolean NOT NULL, 
-	`N_Expediente`			varchar (50), 
-	`Registro`			double, 
-	`Id`			int not null auto_increment unique
-);
-
--- CREATE INDEXES ...
-ALTER TABLE `Histórico_Adjudicación2` ADD INDEX `ADJUDICACION_NICHOTitular_historico_Adjudicacion2` (`Titular`);
-ALTER TABLE `Histórico_Adjudicación2` ADD INDEX `AdjudicaciónLocalizacion_historico_adjudicacion2` (`Localizacion`);
-ALTER TABLE `Histórico_Adjudicación2` ADD INDEX `ArchivoRegistro2` (`Registro`);
--- ALTER TABLE `Histórico_Adjudicación` ADD INDEX `Id` (`Id_historico_adjudicacion`);
-ALTER TABLE `Histórico_Adjudicación2` ADD PRIMARY KEY (`Id`);
+-- ALTER TABLE `Adjudicación1` ADD INDEX `Id` (`Id_adjudicacion`);
+-- ALTER TABLE `Adjudicación2` ADD PRIMARY KEY (`Id`);
 
 CREATE TABLE IF NOT EXISTS `Sepultura2`
  (
@@ -191,11 +141,11 @@ CREATE TABLE IF NOT EXISTS `Sepultura2`
 	`Id`			int not null auto_increment unique, 
 	`Cementerio`			varchar (50), 
 	`Tipo`			varchar (50)
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
 ALTER TABLE `Sepultura2` ADD INDEX `ArchivoRegistro2` (`Registro`);
--- ALTER TABLE `Sepultura` ADD INDEX `Id` (`Id_sepultura`);
+-- ALTER TABLE `Sepultura1` ADD INDEX `Id` (`Id_sepultura`);
 ALTER TABLE `Sepultura2` ADD PRIMARY KEY (`Localizacion`);
 
 CREATE TABLE IF NOT EXISTS `Titular2`
@@ -207,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `Titular2`
 	`DNI`			varchar (12), 
 	`Telefono`			int, 
 	`Id`			int not null auto_increment unique
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
 ALTER TABLE `Titular2` ADD INDEX `ADJUDICACION_NICHOTitular2` (`Titular`);
@@ -228,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `Registro2`
 	`Origen restos`			varchar (50), 
 	`N_Expediente`			varchar (50), 
 	`Incidencias`			varchar (75)
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_spanish2_ci`;
 
 -- CREATE INDEXES ...
 ALTER TABLE `Registro2` ADD PRIMARY KEY (`Id`);

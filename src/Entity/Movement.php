@@ -47,7 +47,7 @@ class Movement
     private $registrationNumber;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $year;
 
@@ -103,7 +103,7 @@ class Movement
 
     /**
      * @ORM\ManyToOne(targetEntity=Petitioner::class, inversedBy="movements", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $petitioner;
 
@@ -218,7 +218,7 @@ class Movement
     public function setDefunctName($defunctName)
     {
         $this->defunctName = $defunctName;
-        $this->defunctFullname = $this->defunctSurname1.' '.$this->defunctSurname2.', '.$this->defunctName;
+        $this->defunctFullname = $this->defunctName.' '. $this->defunctSurname1.' '.$this->defunctSurname2;
 
         return $this;
     }
@@ -231,7 +231,7 @@ class Movement
     public function setDefunctSurname1($defunctSurname1)
     {
         $this->defunctSurname1 = $defunctSurname1;
-        $this->defunctFullname = $this->defunctSurname1.' '.$this->defunctSurname2.', '.$this->defunctName;
+        $this->defunctFullname = $this->defunctName.' '. $this->defunctSurname1.' '.$this->defunctSurname2;
 
         return $this;
     }
@@ -244,7 +244,7 @@ class Movement
     public function setDefunctSurname2($defunctSurname2)
     {
         $this->defunctSurname2 = $defunctSurname2;
-        $this->defunctFullname = $this->defunctSurname1.' '.$this->defunctSurname2.', '.$this->defunctName;
+        $this->defunctFullname = $this->defunctName.' '. $this->defunctSurname1.' '.$this->defunctSurname2;
 
         return $this;
     }

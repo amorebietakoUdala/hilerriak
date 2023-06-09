@@ -1,0 +1,4 @@
+TRUNCATE TABLE Adjudicación1;
+TRUNCATE TABLE Sepultura1;
+TRUNCATE TABLE Titular1;
+TRUNCATE TABLE Registro1;

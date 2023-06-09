@@ -13,11 +13,12 @@ class PetitionerFormType extends AbstractType
     {
         $readonly = $options['readonly'];
         $fullname = $options['fullname'];
+        $new = $options['new'];
         $builder
             ->add('dni', null, [
                 'label' => 'petitioner.dni',
                 'disabled' => $readonly,
-                'required' => true,
+                'required' => !$new ? false : true,
             ])
             ->add('name', null, [
                 'label' => 'petitioner.name',
@@ -37,7 +38,7 @@ class PetitionerFormType extends AbstractType
             ->add('telephone', null, [
                 'label' => 'petitioner.telephone',
                 'disabled' => $readonly,
-                'required' => true,
+                'required' => !$new ? false : true,
             ])
             ->add('email', null, [
                 'label' => 'petitioner.email',

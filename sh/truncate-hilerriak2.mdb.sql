@@ -1,5 +1,4 @@
 TRUNCATE TABLE Adjudicación2;
-TRUNCATE TABLE Histórico_Adjudicación2;
 TRUNCATE TABLE Registro2;
 TRUNCATE TABLE Sepultura2;
 TRUNCATE TABLE Titular2;
