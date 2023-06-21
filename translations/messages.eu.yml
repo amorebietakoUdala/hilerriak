@@ -225,9 +225,9 @@ modal.title.graveType: "Hilobi mota berria"
 #  Mail  #
 ##########
 
-mail.editMovement: "Editar movimiento"
-mail.deceaseDate: "Fecha de defunción"
-mail.editAdjudication: "Editar adjudicación"
-mail.decreeDate: "Fecha del decreto"
-mail.expiryYear: "Concedido hasta"
+mail.editMovement: "Mugimendua editatu"
+mail.deceaseDate: "Heriotz data"
+mail.editAdjudication: "Adjudikazioa editatu"
+mail.decreeDate: "Dekretuaren data"
+mail.expiryYear: "Azken lagapen urtea"
 

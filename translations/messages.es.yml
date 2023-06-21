@@ -229,6 +229,5 @@ modal.title.graveType: "Nuevo tipo de sepultura"
 mail.editMovement: "Editar movimiento"
 mail.deceaseDate: "Fecha de defunción"
 mail.editAdjudication: "Editar adjudicación"
-mail.decreeDate: "Dekretuaren data"
-mail.expiryYear: "Azken lagapen urtea"
-
+mail.decreeDate: "Fecha del decreto"
+mail.expiryYear: "Concedido hasta"
