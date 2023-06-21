@@ -17,6 +17,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/** 
+* @IsGranted("ROLE_TECHNICAL_OFFICE")
+*/
 class CemeteryController extends BaseController
 {
 

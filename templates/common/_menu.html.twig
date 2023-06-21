@@ -15,6 +15,8 @@
 						<a class="dropdown-item {{ ( app.request.attributes.get('_route') == 'owner_index' ) ? 'active': '' }}" href="{{ path('owner_index') }}">{{"navitem.owners.list" | trans | capitalize}}</a>
 					</div>
 				</li>
+			{% endif %}
+	 		{% if is_granted('ROLE_GRAVESELLER') or is_granted('ROLE_UNDERTAKER') %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle {{ ( 
 						app.request.attributes.get('_route') == 'adjudication_index' or 
@@ -33,7 +35,7 @@
 					{{ 'navitem.movements' | trans | capitalize }}
 				</a>
 			</li>
-			{% if is_granted('ROLE_UNDERTAKER') %}
+			{% if is_granted('ROLE_TECHNICAL_OFFICE') %}
 			<li class="nav-item">
 				<a class="nav-link {{ ( app.request.attributes.get('_route') == 'grave_index' )
 				or app.request.attributes.get('_route') == 'grave_new' ? 'active': '' }}" href="{{ path('grave_index') }}">{{"navitem.graves" | trans | capitalize}}</a>

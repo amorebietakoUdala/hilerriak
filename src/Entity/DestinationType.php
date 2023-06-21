@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class DestinationType
 {
     const DESTINATION_TYPE_GRAVE = 1;
-    const DESTINATION_TYPE_ZINC_BOX = 2;
+    const DESTINATION_TYPE_HUMAN_REMAINS_BOX = 2;
     const DESTINATION_TYPE_BAG = 3;
 
     /**

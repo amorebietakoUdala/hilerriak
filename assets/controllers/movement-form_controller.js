@@ -11,8 +11,9 @@ export default class extends Controller {
    static values = {
       locale: String,
       destinationTypeGrave: Number,
-      destinationTypeZyncBox: Number,
+      destinationTypeHumanRemainsBox: Number,
       exhumationType: Number,
+      inhumationType: Number,
    };
 
    connect() {
@@ -38,17 +39,30 @@ export default class extends Controller {
       } else {
          this.wantsToBePresentRowTarget.classList.add('d-none');
       }
+      if (type.value == this.inhumationTypeValue) {
+         this.destinationTypeInputTarget.value="1";
+         this.destinationTypeInputTarget.dispatchEvent(new Event('change'));
+         this.destinationTypeInputTarget.setAttribute('disabled',true);
+      } else {
+         this.destinationTypeInputTarget.removeAttribute('disabled');
+      }
    } 
 
    onDestinationTypeChange(e) {
       e.preventDefault();
       const destinationType = e.currentTarget;
-      if (destinationType.value == this.destinationTypeGraveValue || destinationType.value == this.destinationTypeZyncBoxValue ) {
+      if (destinationType.value == this.destinationTypeGraveValue || destinationType.value == this.destinationTypeHumanRemainsBoxValue ) {
          this.destinationRowTarget.classList.remove('d-none');
       } else {
          this.destinationRowTarget.classList.add('d-none');
          this.destinationInputTarget.value='';
          $(this.destinationInputTarget).trigger('change');
       }
+   }
+
+   onSubmit(e) {
+      e.preventDefault();
+      this.destinationTypeInputTarget.removeAttribute('disabled');
+      e.currentTarget.submit();
    }
 }

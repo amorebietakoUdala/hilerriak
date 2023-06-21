@@ -3,18 +3,30 @@
 	{{ include('common/_messages.html.twig') }}
 {% endblock %}
 
-{{ form_start(form) }}
+{{ form_start(form, { 'attr':{
+    'data-controller' : 'movement-form',
+    'data-movement-form-locale-value': app.request.locale,
+    'data-movement-form-destination-type-grave-value': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_GRAVE'),
+    'data-movement-form-destination-type-human-remains-box-value': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_HUMAN_REMAINS_BOX'),
+    'data-movement-form-exhumation-type-value': constant('App\\Entity\\MovementType::MOVEMENT_TYPE_EXHUMATION'),
+    'data-movement-form-inhumation-type-value': constant('App\\Entity\\MovementType::MOVEMENT_TYPE_INHUMATION'),
+    'data-action': 'movement-form#onSubmit',
+    }}) }}
     {{ include('petitioner/_form.html.twig', {
         'embeded': true,
     })}}
     <div class="card mt-1 mb-2">
         <div class="card-header h6">{{ 'label.movement' | trans }}</div>
-            <div class="container row align-items-center mb-1"  {{ stimulus_controller('movement-form',{
+            <div class="container row align-items-center mb-1"  
+
+            {# {{ stimulus_controller('movement-form',{
                 'locale': app.request.locale,
                 'destinationTypeGrave': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_GRAVE'),
-                'destinationTypeZyncBox': constant('App\\Entity\\DestinationType::DESTINATION_TYPE_ZINC_BOX'),
                 'exhumationType': constant('App\\Entity\\MovementType::MOVEMENT_TYPE_EXHUMATION'),
-            })}}>
+                'inhumationType': constant('App\\Entity\\MovementType::MOVEMENT_TYPE_INHUMATION'),
+            })}} #}
+
+            >
                 <div class="col-lg-2 col-md-2 col-sm-6">
                     {{ form_row(form.type, { 'attr': 
                         { 'class' : 'form-select form-select-sm', 'data-action': 'movement-form#onTypeChange' }

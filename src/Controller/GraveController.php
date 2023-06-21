@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /** 
-* @IsGranted("ROLE_UNDERTAKER")
+* @IsGranted("ROLE_TECHNICAL_OFFICE")
 */
 class GraveController extends BaseController
 {

@@ -109,7 +109,7 @@ class MovementController extends BaseController
             $this->addFlash('success', 'messages.movementSaved');
             $this->sendMessage(
                 'Mugimendu berria sortu da / Se ha creado un nuevo movimiento', 
-                [$this->getParameter('mailer_undertaker')], 
+                explode(',',$this->getParameter('mailer_undertaker')), 
                 $data,
                 'movement/newMovementMail.html.twig'
             );
@@ -168,7 +168,7 @@ class MovementController extends BaseController
                 $this->updateGraves($data);
                 $this->sendMessage(
                     'Hurrengo mugimendua bukatu egin da / El siguiente movimiento se ha finalizado', 
-                    [$this->getParameter('mailer_technical_office')], 
+                    explode(',',$this->getParameter('mailer_technical_office')), 
                     $data,
                     'movement/movementFinishedMail.html.twig'
                 );
