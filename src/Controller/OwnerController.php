@@ -79,7 +79,7 @@ class OwnerController extends BaseController
     {
         $this->loadQueryParameters($request);
         $form = $this->createForm(OwnerFormType::class, $owner,[
-            'new' => true,
+            'new' => false,
             'readonly' => false,
         ]);
         $form->handleRequest($request);
