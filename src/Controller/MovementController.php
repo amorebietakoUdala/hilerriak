@@ -209,22 +209,26 @@ class MovementController extends BaseController
     public function index(Request $request) {
         $this->loadQueryParameters($request);
         $criteria = $request->query->all();
-        unset($criteria['page'],$criteria['pageSize'],$criteria['sortName'],$criteria['sortOrder'],$criteria['adjudication'],$criteria['ajax']);
+        $movementId = isset($criteria['movement']) ? $criteria['movement'] : null;
+        unset($criteria['page'],$criteria['pageSize'],$criteria['sortName'],$criteria['sortOrder'],$criteria['adjudication'],$criteria['ajax'], $criteria['movement']);
         $movementSearchForm = $this->loadSearchForm($criteria);
         $movements = [];
         $form = $this->createForm(MovementSearchFormType::class, $movementSearchForm,[
             'locale' => $request->getLocale(),
             'readonly' => false,
         ]);
+        if ($request->getMethod() === 'GET') {
+            if ( $movementId !== null ) {
+                $movementSearchForm['id'] = $movementId;
+            }
+            $movements = $this->repo->findBy($movementSearchForm, [ 'id' => 'desc' ], $this->getParameter('max_movements'));
+        }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Movement $data */
             $data = $form->getData();
             $criteriaWithoutBlanks = $this->removeBlankFilters($data);
             $movements = $this->repo->findByCriteria($criteriaWithoutBlanks, null, $this->getParameter('max_movements'), null);
-        }
-        if ($request->getMethod() === 'GET') {
-            $movements = $this->repo->findBy($movementSearchForm, [ 'id' => 'desc' ], $this->getParameter('max_movements'));
         }
         if (count($movements) === $this->getParameter('max_movements')) {
             $this->addFlash('warning', new TranslatableMessage('messages.maxMovementsReached',[
@@ -310,6 +314,12 @@ class MovementController extends BaseController
             $this->addFlash('error','messages.destinationIsFull');
             return true;
         }
+        if ( $destination !== null && $destination->getType()->getId() === GraveType::ASHES && 
+            $movement->getType()->getId() !== MovementType::MOVEMENT_TYPE_ASHES_DEPOSITATION ) {
+            $this->addFlash('error','messages.ashesNeedsAshesDepositationTypeNovement');
+            return true;
+        }
+
         if ( $destination !== null && count($destination->getAdjudications()) === 0 ) {
             $this->addFlash('error','messages.destinationNotAdjudicated');
             return true;

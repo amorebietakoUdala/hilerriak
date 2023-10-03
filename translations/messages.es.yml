@@ -201,6 +201,7 @@ messages.adjudicationIsCurrent: "La adjudicación que desea borrar es la vigente
 messages.destinationIsFull: "El columbario destino está completo no se puede hacer ese movimiento"
 messages.missingDNIs: "Faltan muchos dnis en los datos migrados. Por favor, buscar por nombre completo y completar la información editando"
 messages.destinationNotAdjudicated: "La sepultura destino no está adjudicada. No se puede crear el movimiento sin adjudicarlo primero."
+messages.ashesNeedsAshesDepositationTypeNovement: "Cuando el destino es un columbario sólo se puede hacer un movimiento de depósito de cenizas"
 
 label.yes: "Sí"
 label.no: "No"

@@ -200,6 +200,7 @@ messages.adjudicationIsCurrent: "Ezabatu nahi duzun adjudikazioa indarrean dago.
 messages.destinationIsFull: "Helburua den kolunbarioa beteta dago, ezin da mugimendu hori egin"
 messages.missingDNIs: "Migratutako datuetan nan zenbaki asko falta dira. Mesedez, bilatu izen osoa erabiliz eta datuak osatu editatu aukera erabiliz"
 messages.destinationNotAdjudicated: "Helburua den hilobia ez dago adjudikatuta. Ezin da mugimendua sortu adjukitatuta ez badago."
+messages.ashesNeedsAshesDepositationTypeNovement: "Kolumbario batetan bakarrik errautsak gorde daitezke"
 
 label.yes: "Bai"
 label.no: "Ez"
