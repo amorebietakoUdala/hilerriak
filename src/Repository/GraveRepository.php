@@ -40,21 +40,6 @@ class GraveRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Grave[] Returns an array of Grave objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
    public function findByCemeteryAndSide(Cemetery $cemetery, $side): ?array
    {
        return $this->createQueryBuilder('g')

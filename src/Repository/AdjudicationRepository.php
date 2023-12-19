@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Adjudication;
-use App\Entity\Cemetery;
-use App\Entity\Grave;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -93,13 +91,4 @@ class AdjudicationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-//    public function findOneBySomeField($value): ?Adjudication
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -2,56 +2,36 @@
 
 namespace App\Entity;
 
-use App\Repository\PersonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\MappedSuperclass
- */
-class Person
+#[ORM\MappedSuperclass]
+class Person implements \Stringable
 {
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"api_person"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['api_person'])]
     protected $dni;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"api_person"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['api_person'])]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"api_person"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['api_person'])]
     protected $surname1;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"api_person"})
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['api_person'])]
     protected $surname2;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"api_person"})
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['api_person'])]
     protected $fullname;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $telephone;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $email;
 
     public function getDni(): ?string
@@ -141,8 +121,8 @@ class Person
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->dni !== null ? "$this->dni-$this->fullname" : $this->fullname;
+        return (string) ($this->dni !== null ? "$this->dni-$this->fullname" : $this->fullname);
     }
 }

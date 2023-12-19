@@ -11,28 +11,20 @@ use App\Entity\Grave;
 use App\Form\GraveFormType;
 use App\Form\GraveSearchFormType;
 use Countable;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/** 
-* @IsGranted("ROLE_TECHNICAL_OFFICE")
-*/
+#[IsGranted('ROLE_TECHNICAL_OFFICE')]
 class GraveController extends BaseController
 {
-    private GraveRepository $repo;
-    private EntityManagerInterface $em;
-    private TranslatorInterface $translator;
-
-    public function __construct(GraveRepository $repo, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(
+        private readonly GraveRepository $repo, 
+        private readonly EntityManagerInterface $em, 
+        private readonly TranslatorInterface $translator)
     {
-        $this->repo = $repo;
-        $this->em = $em;
-        $this->translator = $translator;
     }
 
-    /**
-     * @Route("/{_locale}/grave/new", name="grave_new")
-     */
+    #[Route(path: '/{_locale}/grave/new', name: 'grave_new')]
     public function new(Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -57,9 +49,7 @@ class GraveController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/grave/{grave}/edit", name="grave_edit")
-     */
+    #[Route(path: '/{_locale}/grave/{grave}/edit', name: 'grave_edit')]
     public function edit(Grave $grave, Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -84,19 +74,17 @@ class GraveController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/grave/{grave}/delete", name="grave_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{_locale}/grave/{grave}/delete', name: 'grave_delete', methods: ['DELETE'])]
     public function delete(Grave $grave, Request $request): Response
     {
         if ($this->checkIfHasAdjudications($grave->getAdjudications())) {
-            return new Response($this->translator->trans('messages.graveHasAdjudications'), 422);
+            return new Response($this->translator->trans('messages.graveHasAdjudications'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         if ($this->checkIfHasSourceMovements($grave->getSourceMovements())) {
-            return new Response($this->translator->trans('messages.graveHasSourceMovements'), 422);
+            return new Response($this->translator->trans('messages.graveHasSourceMovements'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         if ($this->checkIfHasDestinationMovements($grave->getDestinationMovements())) {
-            return new Response($this->translator->trans('messages.graveHasDestinationMovements'), 422);
+            return new Response($this->translator->trans('messages.graveHasDestinationMovements'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         if ($this->isCsrfTokenValid('delete'.$grave->getId(), $request->get('_token'))) {
             $this->em->remove($grave);
@@ -104,17 +92,15 @@ class GraveController extends BaseController
             if (!$request->isXmlHttpRequest()) {
                 return $this->redirectToRoute('grave_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
     }
 
-    /**
-     * @Route("/{_locale}/grave/{grave}", name="grave_show")
-     */
+    #[Route(path: '/{_locale}/grave/{grave}', name: 'grave_show')]
     public function show(Grave $grave, Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -129,9 +115,7 @@ class GraveController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/grave", name="grave_index")
-     */
+    #[Route(path: '/{_locale}/grave', name: 'grave_index')]
     public function index(Request $request): Response
     {
         $graves = [];

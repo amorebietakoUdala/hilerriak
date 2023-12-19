@@ -6,27 +6,19 @@ use App\Repository\OwnerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=OwnerRepository::class)
- */
+#[ORM\Entity(repositoryClass: OwnerRepository::class)]
 class Owner extends Person
 {
-//    use TimestampableEntity;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"api_person"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['api_person'])]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Adjudication::class, mappedBy="owner")
-     */
-    private $adjudications;
+    #[ORM\OneToMany(targetEntity: Adjudication::class, mappedBy: 'owner')]
+    private Collection|array $adjudications;
 
     public function __construct()
     {
@@ -68,8 +60,8 @@ class Owner extends Person
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->dni !== null ? "$this->dni-$this->fullname" : $this->fullname;
+        return (string) ($this->dni !== null ? "$this->dni-$this->fullname" : $this->fullname);
     }
 }

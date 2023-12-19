@@ -34,9 +34,7 @@ class MovementFormType extends AbstractType
                 'label' => 'movement.type',
                 'disabled' => $readonly,
                 'required' => !$new ? false : true,
-                'choice_label' => function (MovementType $movementType) use ($locale) {
-                    return $movementType->getDescription($locale);
-                }                
+                'choice_label' => fn(MovementType $movementType) => $movementType->getDescription($locale)                
             ])
             ->add('source', EntityType::class,[
                 'class' => Grave::class,
@@ -44,9 +42,7 @@ class MovementFormType extends AbstractType
                 'disabled' => $readonly,
                 'required' => false,
                 'placeholder' => '',
-                'choice_label' => function (Grave $grave) {
-                    return $grave->getCodeCemetery();
-                }                
+                'choice_label' => fn(Grave $grave) => $grave->getCodeCemetery()                
             ])
             ->add('destinationType', EntityType::class,[
                 'class' => DestinationType::class,
@@ -54,9 +50,7 @@ class MovementFormType extends AbstractType
                 'disabled' => $readonly,
                 'required' => !$new ? false : true,
                 'placeholder' => 'label.choose',
-                'choice_label' => function (DestinationType $destinationType) use ($locale) {
-                    return $destinationType->getDescription($locale);
-                }                
+                'choice_label' => fn(DestinationType $destinationType) => $destinationType->getDescription($locale)                
             ])
             ->add('destination', EntityType::class,[
                 'class' => Grave::class,
@@ -64,9 +58,7 @@ class MovementFormType extends AbstractType
                 'disabled' => $readonly,
                 'required' => false,
                 'placeholder' => 'label.choose',
-                'choice_label' => function (Grave $grave) {
-                    return $grave->getCodeCemetery();
-                }                
+                'choice_label' => fn(Grave $grave) => $grave->getCodeCemetery()                
             ])
             ->add('wantsToBePresent', null,[
                 'label' => 'movement.wantsToBePresent',

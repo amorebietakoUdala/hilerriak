@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Cemetery;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\GraveType;
@@ -12,26 +11,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/{_locale}/admin")
- */
+#[Route(path: '/{_locale}/admin')]
 class GraveTypeController extends BaseController
 {
 
-    private GraveTypeRepository $repo;
-    private EntityManagerInterface $em;
-    private TranslatorInterface $translator;
-
-    public function __construct(GraveTypeRepository $repo, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(
+        private readonly GraveTypeRepository $repo, 
+        private readonly EntityManagerInterface $em, 
+        private readonly TranslatorInterface $translator)
     {
-        $this->repo = $repo;
-        $this->em = $em;
-        $this->translator = $translator;
     }
 
-    /**
-     * @Route("/grave-type/new", name="graveType_new")
-     */
+    #[Route(path: '/grave-type/new', name: 'graveType_new')]
     public function new(Request $request): Response 
     {
         $this->loadQueryParameters($request);
@@ -52,7 +43,7 @@ class GraveTypeController extends BaseController
                     'form' => $form,
                     'new' => true,
                     'readonly' => false,
-                ], new Response(null, 422));        
+                ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY));        
             } else {
                 $graveType = $data;
             }
@@ -68,9 +59,7 @@ class GraveTypeController extends BaseController
         ],  new Response(null, $form->isSubmitted() && ( !$form->isValid() )? 422 : 200));        
     }
 
-    /**
-     * @Route("/grave-type/{graveType}", name="graveType_show")
-     */
+    #[Route(path: '/grave-type/{graveType}', name: 'graveType_show')]
     public function show(GraveType $graveType, Request $request): Response 
     {
         $form = $this->createForm(GraveTypeFormType::class, $graveType, [
@@ -85,9 +74,7 @@ class GraveTypeController extends BaseController
       ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200,));
     }
 
-    /**
-     * @Route("/grave-type/{graveType}/edit", name="graveType_edit")
-     */
+    #[Route(path: '/grave-type/{graveType}/edit', name: 'graveType_edit')]
     public function edit(GraveType $graveType, Request $request): Response 
     {
         $form = $this->createForm(GraveTypeFormType::class, $graveType, [
@@ -102,13 +89,11 @@ class GraveTypeController extends BaseController
       ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200,));
     }
 
-    /**
-     * @Route("/grave-type/{graveType}/delete", name="graveType_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/grave-type/{graveType}/delete', name: 'graveType_delete', methods: ['DELETE'])]
     public function delete(GraveType $graveType, Request $request): Response 
     {
-        if ( $this->checkRemovable($graveType->getGraves())) {
-            return new Response($this->translator->trans('messages.graveTypeHasGraves'), 422);
+        if ( !$this->checkRemovable($graveType->getGraves())) {
+            return new Response($this->translator->trans('messages.graveTypeHasGraves'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         if ($this->isCsrfTokenValid('delete'.$graveType->getId(), $request->get('_token'))) {
             $this->em->remove($graveType);
@@ -116,16 +101,14 @@ class GraveTypeController extends BaseController
             if (!$request->isXmlHttpRequest() && !$this->getAjax()) {
                 return $this->redirectToRoute('graveType_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
-    /**
-     * @Route("/grave-type", name="graveType_index")
-     */
+    #[Route(path: '/grave-type', name: 'graveType_index')]
     public function index(Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -135,10 +118,13 @@ class GraveTypeController extends BaseController
         $template = !$this->getAjax() ? 'grave-type/index.html.twig' : 'grave-type/_list.html.twig';
         return $this->render($template, [
             'graveTypes' => $graveTypes,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);        
     }
 
+    /**
+     * Checks if it's already a grave type with that description
+     */
     public function checkAlreadyExists(GraveType $graveType) {
         $result = $this->repo->findOneBy([
             'descriptionEs' => $graveType->getDescriptionEs(),
@@ -153,6 +139,11 @@ class GraveTypeController extends BaseController
         return false;
     }
 
+    /**
+     * If there is at least one grave of that type if can't be removed.
+     * 
+     * So this checks if it has elements
+     */
     private function checkRemovable($graves): bool {
         return !$this->hasElements($graves);
     }

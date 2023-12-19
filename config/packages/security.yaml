@@ -1,5 +1,4 @@
 security:
-    enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         legacy:
@@ -50,11 +49,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/$, roles: ROLE_HILERRIAK }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: ROLE_HILERRIAK }
         - { path: ^/, roles: ROLE_HILERRIAK }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_GIZA_BALIABIDEAK }
 
 when@test:
     security:

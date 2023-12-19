@@ -7,36 +7,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DestinationTypeRepository::class)
- */
-class DestinationType
+#[ORM\Entity(repositoryClass: DestinationTypeRepository::class)]
+class DestinationType implements \Stringable
 {
-    const DESTINATION_TYPE_GRAVE = 1;
-    const DESTINATION_TYPE_HUMAN_REMAINS_BOX = 2;
-    const DESTINATION_TYPE_BAG = 3;
+    final public const DESTINATION_TYPE_GRAVE = 1;
+    final public const DESTINATION_TYPE_HUMAN_REMAINS_BOX = 2;
+    final public const DESTINATION_TYPE_BAG = 3;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEs;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEs = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEu;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEu = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Movement::class, mappedBy="destinationType")
-     */
-    private $movements;
+    #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'destinationType')]
+    private Collection|array $movements;
 
     public function __construct()
     {
@@ -109,8 +99,8 @@ class DestinationType
         return $this->descriptionEu;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->descriptionEs;
+        return (string) $this->descriptionEs;
     }
 }

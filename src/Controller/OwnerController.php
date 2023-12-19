@@ -6,7 +6,6 @@ use App\Entity\Owner;
 use App\Form\OwnerFormType;
 use App\Form\OwnerSearchFormType;
 use App\Repository\OwnerRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,26 +13,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/{_locale}")
- */
+#[Route(path: '/{_locale}')]
 class OwnerController extends BaseController
 {
 
-    private OwnerRepository $repo;
-    private EntityManagerInterface $em;
-    private TranslatorInterface $translator;
-
-    public function __construct(OwnerRepository $repo, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(
+        private readonly OwnerRepository $repo, 
+        private readonly EntityManagerInterface $em, 
+        private readonly TranslatorInterface $translator)
     {
-        $this->repo = $repo;
-        $this->em = $em;
-        $this->translator = $translator;
     }
 
-    /**
-     * @Route("/owner/new", name="owner_new")
-     */
+    #[Route(path: '/owner/new', name: 'owner_new')]
     public function new(Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -72,9 +63,7 @@ class OwnerController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/owner/{owner}/edit", name="owner_edit")
-     */
+    #[Route(path: '/owner/{owner}/edit', name: 'owner_edit')]
     public function edit(Owner $owner, Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -99,13 +88,11 @@ class OwnerController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/owner/{owner}/delete", name="owner_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/owner/{owner}/delete', name: 'owner_delete', methods: ['DELETE'])]
     public function delete(Owner $owner, Request $request): Response
     {
         if ( !$this->checkRemovable($owner->getAdjudications()) ) {
-            return new Response($this->translator->trans('messages.ownerHasAdjudications'), 422);
+            return new Response($this->translator->trans('messages.ownerHasAdjudications'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         if ($this->isCsrfTokenValid('delete'.$owner->getId(), $request->get('_token'))) {
             $this->em->remove($owner);
@@ -113,17 +100,15 @@ class OwnerController extends BaseController
             if (!$request->isXmlHttpRequest()) {
                 return $this->redirectToRoute('owner_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
     }
 
-    /**
-     * @Route("/owner/{owner}", name="owner_show")
-     */
+    #[Route(path: '/owner/{owner}', name: 'owner_show')]
     public function show(Owner $owner, Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -139,9 +124,7 @@ class OwnerController extends BaseController
     }
 
 
-    /**
-     * @Route("/owner", name="owner_index")
-     */
+    #[Route(path: '/owner', name: 'owner_index')]
     public function index(Request $request): Response
     {
         $this->loadQueryParameters($request);

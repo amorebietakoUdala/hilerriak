@@ -40,14 +40,11 @@ class MovementRepository extends ServiceEntityRepository
     }
 
     /**
-        * @return Movement[] Returns an array of Movement objects
-        */
+    * @return Movement[] Returns an array of Movement objects
+    */
     public function findByCriteria($criteria, $orderBy = null, $limit = null, $offset = null): array
     {
         $criteriaLikeKeys = [
-            // 'defunctName' => null,
-            // 'defunctSurname1' => null,
-            // 'defunctSurname2' => null,
             'defunctFullname' => null,
         ];
         $criteriaLike = $criteriaAnd = null;
@@ -55,9 +52,9 @@ class MovementRepository extends ServiceEntityRepository
             $criteriaLike = array_intersect_key($criteria,$criteriaLikeKeys);
             $criteriaAnd = array_diff_key($criteria,$criteriaLikeKeys);
         }
-        $from = isset($criteriaAnd['movementDateFrom']) ? $criteriaAnd['movementDateFrom'] : null;
+        $from = $criteriaAnd['movementDateFrom'] ?? null;
         unset($criteriaAnd['movementDateFrom']);
-        $to = isset($criteriaAnd['movementDateTo']) ? $criteriaAnd['movementDateTo'] : null;
+        $to = $criteriaAnd['movementDateTo'] ?? null;
         unset($criteriaAnd['movementDateTo']);
         $qb = $this->createQueryBuilder('m');
 
@@ -85,15 +82,5 @@ class MovementRepository extends ServiceEntityRepository
         $qb->setMaxResults($limit);
         return $qb->getQuery()->getResult();
     }
-
-//    public function findOneBySomeField($value): ?Movement
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
 

@@ -48,9 +48,7 @@ class GraveSearchFormType extends AbstractType
                 'label' => 'grave.type',
                 'disabled' => $readonly,
                 'placeholder' => '',
-                'choice_label' => function ($graveType) use ($locale) {
-                    return $graveType->getDescription($locale);
-                },
+                'choice_label' => fn($graveType) => $graveType->getDescription($locale),
                 'required' => false,                
             ])
         ;

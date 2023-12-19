@@ -24,45 +24,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * @Route("/{_locale}")
- */
+#[Route(path: '/{_locale}')]
 class MovementController extends BaseController
 {
 
-    private EntityManagerInterface $em;
-    private MovementRepository $repo;
-    private MovementTypeRepository $movementTypeRepo;
-    private AdjudicationRepository $adjudicationRepo;
-    private DestinationTypeRepository $destinationTypeRepo;
-    private GraveRepository $graveRepo;
-    private MailerInterface $mailer;
-    private PetitionerRepository $petitionerRepo;
-
     public function __construct(
-        EntityManagerInterface $em, 
-        MovementRepository $repo, 
-        MovementTypeRepository $movementTypeRepo, 
-        DestinationTypeRepository $destinationTypeRepo, 
-        GraveRepository $graveRepo, 
-        MailerInterface $mailer,
-        AdjudicationRepository $adjudicationRepo,
-        PetitionerRepository $petitionerRepo
-    )
+        private readonly EntityManagerInterface $em, 
+        private readonly MovementRepository $repo, 
+        private readonly MovementTypeRepository $movementTypeRepo, 
+        private readonly DestinationTypeRepository $destinationTypeRepo, 
+        private readonly GraveRepository $graveRepo, 
+        private readonly MailerInterface $mailer, 
+        private readonly AdjudicationRepository $adjudicationRepo, 
+        private readonly PetitionerRepository $petitionerRepo)
     {
-        $this->em = $em;
-        $this->repo = $repo;
-        $this->movementTypeRepo = $movementTypeRepo;
-        $this->destinationTypeRepo = $destinationTypeRepo;
-        $this->graveRepo = $graveRepo;
-        $this->mailer = $mailer;
-        $this->adjudicationRepo = $adjudicationRepo;
-        $this->petitionerRepo = $petitionerRepo;
     }
 
-    /**
-     * @Route("/movement/new", name="movement_new")
-     */
+    #[Route(path: '/movement/new', name: 'movement_new')]
     public function new(Request $request): Response 
     {
         $this->loadQueryParameters($request);
@@ -121,9 +99,7 @@ class MovementController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/movement/{movement}", name="movement_show")
-     */
+    #[Route(path: '/movement/{movement}', name: 'movement_show')]
     public function show(Request $request, Movement $movement) {
         $this->loadQueryParameters($request);
         $form = $this->createForm(MovementFormType::class, $movement,[
@@ -147,9 +123,7 @@ class MovementController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/movement/{movement}/edit", name="movement_edit")
-     */
+    #[Route(path: '/movement/{movement}/edit', name: 'movement_edit')]
     public function edit(Request $request, Movement $movement) {
         $this->loadQueryParameters($request);
         $form = $this->createForm(MovementFormType::class, $movement,[
@@ -185,9 +159,7 @@ class MovementController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/movement/{movement}/delete", name="movement_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/movement/{movement}/delete', name: 'movement_delete', methods: ['DELETE'])]
     public function delete(Request $request, Movement $movement) {
         $this->loadQueryParameters($request);
         if ($this->isCsrfTokenValid('delete'.$movement->getId(), $request->get('_token'))) {
@@ -196,20 +168,18 @@ class MovementController extends BaseController
             if (!$request->isXmlHttpRequest() && !$this->getAjax()) {
                 return $this->redirectToRoute('movement_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
-    /**
-     * @Route("/movement", name="movement_index")
-     */
+    #[Route(path: '/movement', name: 'movement_index')]
     public function index(Request $request) {
         $this->loadQueryParameters($request);
         $criteria = $request->query->all();
-        $movementId = isset($criteria['movement']) ? $criteria['movement'] : null;
+        $movementId = $criteria['movement'] ?? null;
         unset($criteria['page'],$criteria['pageSize'],$criteria['sortName'],$criteria['sortOrder'],$criteria['adjudication'],$criteria['ajax'], $criteria['movement']);
         $movementSearchForm = $this->loadSearchForm($criteria);
         $movements = [];
