@@ -35,9 +35,7 @@ class ZoneCreationFormType extends AbstractType
             ->add('type', EntityType::class, [
                 'label' => 'grave.type',
                 'class' => GraveType::class,
-                'choice_label' => function (GraveType $graveType) use ($locale) {
-                    return $graveType->getDescription($locale);
-                }                
+                'choice_label' => fn(GraveType $graveType) => $graveType->getDescription($locale)                
             ])
         ;
     }

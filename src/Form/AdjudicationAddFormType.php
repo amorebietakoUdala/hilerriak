@@ -7,7 +7,6 @@ use App\Entity\Grave;
 use App\Entity\Owner;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,10 +48,6 @@ class AdjudicationAddFormType extends AbstractType
                 'label' => 'adjudication.registrationNumber',
                 'required' => true,
             ])
-            // ->add('addMovement', HiddenType::class,[
-            //     'required' => false,
-            //     'empty_data' => 0,
-            // ])
         ;
     }
 

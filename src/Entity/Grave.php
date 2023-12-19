@@ -9,89 +9,57 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Cemetery;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=GraveRepository::class)
- */
-class Grave
+#[ORM\Entity(repositoryClass: GraveRepository::class)]
+class Grave implements \Stringable
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"api_graves"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['api_graves'])]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"api_graves"})
-     */
-    private $code;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['api_graves'])]
+    private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $years;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $years = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $free;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $free = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Cemetery::class, inversedBy="graves")
-     */
-    private $cemetery;
+    #[ORM\ManyToOne(targetEntity: Cemetery::class, inversedBy: 'graves')]
+    private ?Cemetery $cemetery = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=GraveType::class, inversedBy="graves")
-     */
-    private $type;
+    #[ORM\ManyToOne(targetEntity: GraveType::class, inversedBy: 'graves')]
+    private ?GraveType $type = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Adjudication::class, mappedBy="grave")
-     */
-    private $adjudications;
+    #[ORM\OneToMany(targetEntity: Adjudication::class, mappedBy: 'grave')]
+    private Collection|array $adjudications;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Movement::class, mappedBy="source")
-     */
-    private $sourceMovements;
+    #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'source')]
+    private Collection|array $sourceMovements;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Movement::class, mappedBy="destination")
-     */
-    private $destinationMovements;
+    #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'destination')]
+    private Collection|array $destinationMovements;
 
-    /**
-     * @ORM\Column(type="string", length=2, nullable=true)
-     */
-    private $side;
+    #[ORM\Column(type: 'string', length: 2, nullable: true)]
+    private ?string $side = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $zoneOrRow;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $zoneOrRow = null;
 
-    /**
-     * @ORM\Column(type="string", length=5, nullable=true)
-     */
-    private $number;
+    #[ORM\Column(type: 'string', length: 5, nullable: true)]
+    private ?string $number = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $capacity;
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private ?int $capacity = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    private $occupation;
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private ?int $occupation = null;
 
     public function __construct()
     {
@@ -207,9 +175,9 @@ class Grave
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->code;
+        return (string) $this->code;
     }
 
     /**

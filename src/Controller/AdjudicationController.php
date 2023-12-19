@@ -18,41 +18,20 @@ use Symfony\Component\HttpFoundation\Response;
 // use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Mailer\MailerInterface;
 
 class AdjudicationController extends BaseController
 {
 
-    private EntityManagerInterface $em;
-    private AdjudicationRepository $repo;
-    private CemeteryRepository $cemeteryRepo;
-    private OwnerRepository $ownerRepo;
-    private GraveRepository $graveRepo;
-    // private TranslatorInterface $translator;
-    // private MailerInterface $mailer;
-
     public function __construct(
-        EntityManagerInterface $em, 
-        AdjudicationRepository $repo, 
-        CemeteryRepository $cemeteryRepo, 
-        OwnerRepository $ownerRepo, 
-        GraveRepository $graveRepo 
-        // TranslatorInterface $translator,
-        // MailerInterface $mailer
-    ) {
-        $this->em = $em;
-        $this->repo = $repo;
-        $this->cemeteryRepo = $cemeteryRepo;
-        $this->ownerRepo = $ownerRepo;
-        $this->graveRepo = $graveRepo;
-        // $this->translator = $translator;
-        // $this->mailer = $mailer;
-    }
+        private readonly EntityManagerInterface $em, 
+        private readonly AdjudicationRepository $repo, 
+        private readonly CemeteryRepository $cemeteryRepo, 
+        private readonly OwnerRepository $ownerRepo, 
+        private readonly GraveRepository $graveRepo
+    ) 
+    {}
 
-    /**
-     * @Route("/{_locale}/adjudication/new", name="adjudication_new")
-     */
+    #[Route(path: '/{_locale}/adjudication/new', name: 'adjudication_new')]
     public function new(Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -63,8 +42,6 @@ class AdjudicationController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) 
         {
             $data = $form->getData();
-            // $addMovement = boolval($data['addMovement']);
-            // unset($data['addMovement']);
             $adjudication = new Adjudication();
             $adjudication->fill($data);
             $year = intval((new \DateTime())->format('Y'));
@@ -78,13 +55,9 @@ class AdjudicationController extends BaseController
             // No need to send email on adjudication, it will be notified through AUPAC
             //$this->sendMessage('Hilobi berria adjudikatu da / Se ha adjudicado una nueva sepultura', [$this->getParameter('mailer_technical_office')], $adjudication );
             $this->addFlash('success', 'messages.adjudicationSaved');
-            // if (!$addMovement) {
-            // return $this->redirectToRoute('adjudication_index');
-            // } else {
             return parent::redirect($this->generateUrl('movement_new',[
                 'adjudication' => $adjudication->getId(),
             ]));
-            // }
         }
         return $this->renderForm('adjudication/edit.html.twig',[
             'form' => $form,
@@ -93,9 +66,7 @@ class AdjudicationController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adjudication/{adjudication}", name="adjudication_show")
-     */
+    #[Route(path: '/{_locale}/adjudication/{adjudication}', name: 'adjudication_show')]
     public function show(Adjudication $adjudication, Request $request): Response 
     {
         $this->loadQueryParameters($request);
@@ -110,9 +81,7 @@ class AdjudicationController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adjudication/{adjudication}/edit", name="adjudication_edit")
-     */
+    #[Route(path: '/{_locale}/adjudication/{adjudication}/edit', name: 'adjudication_edit')]
     public function edit(Adjudication $adjudication, Request $request): Response 
     {
         $this->loadQueryParameters($request);
@@ -136,9 +105,7 @@ class AdjudicationController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adjudication/{adjudication}/delete", name="adjudication_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{_locale}/adjudication/{adjudication}/delete', name: 'adjudication_delete', methods: ['DELETE'])]
     public function delete(Adjudication $adjudication, Request $request): Response 
     {
         if ($this->isCsrfTokenValid('delete'.$adjudication->getId(), $request->get('_token'))) {
@@ -147,16 +114,14 @@ class AdjudicationController extends BaseController
             if (!$request->isXmlHttpRequest() && !$this->getAjax()) {
                 return $this->redirectToRoute('adjudication_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, \Symfony\Component\HttpFoundation\Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', \Symfony\Component\HttpFoundation\Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
-    /**
-     * @Route("/{_locale}/adjudication", name="adjudication_index")
-     */
+    #[Route(path: '/{_locale}/adjudication', name: 'adjudication_index')]
     public function index(Request $request): Response
     {
         $this->loadQueryParameters($request);

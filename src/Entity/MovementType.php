@@ -7,37 +7,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=MovementTypeRepository::class)
- */
+#[ORM\Entity(repositoryClass: MovementTypeRepository::class)]
 class MovementType
 {
-    const MOVEMENT_TYPE_ASHES_DEPOSITATION = 1;
-    const MOVEMENT_TYPE_INHUMATION = 2;
-    const MOVEMENT_TYPE_EXHUMATION = 3;
-    const MOVEMENT_TYPE_TRANSFER = 4;
+    final public const MOVEMENT_TYPE_ASHES_DEPOSITATION = 1;
+    final public const MOVEMENT_TYPE_INHUMATION = 2;
+    final public const MOVEMENT_TYPE_EXHUMATION = 3;
+    final public const MOVEMENT_TYPE_TRANSFER = 4;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEs;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEs = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEu;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEu = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Movement::class, mappedBy="type")
-     */
-    private $movements;
+    #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'type')]
+    private Collection|array $movements;
 
     public function __construct()
     {

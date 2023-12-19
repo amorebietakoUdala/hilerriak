@@ -7,47 +7,31 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 use App\Repository\AdjudicationRepository;
 
-/**
- * @ORM\Entity(repositoryClass=AdjudicationRepository::class)
- */
+#[ORM\Entity(repositoryClass: AdjudicationRepository::class)]
 class Adjudication
 {
     use TimestampableEntity;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private $adjudicationYear;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private $expiryYear;
 
-    /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 1024, nullable: true)]
     private $note;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $registrationNumber;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Owner::class, inversedBy="adjudications")
-     */
+    #[ORM\ManyToOne(targetEntity: Owner::class, inversedBy: 'adjudications')]
     private $owner;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Grave::class, inversedBy="adjudications")
-     */
+    #[ORM\ManyToOne(targetEntity: Grave::class, inversedBy: 'adjudications')]
     private $grave;
 
     public function getId(): ?int
@@ -116,12 +100,12 @@ class Adjudication
     }
 
     public function fill(array $data): self {
-        $this->adjudicationYear = isset($data['adjudicationYear']) ? $data['adjudicationYear'] : null;
-        $this->expiryYear = isset($data['expiryYear']) ? $data['expiryYear']: null;
-        $this->note = isset($data['note']) ? $data['note']: null;
-        $this->registrationNumber = isset($data['registrationNumber']) ? $data['registrationNumber']: null;
-        $this->owner = isset($data['owner']) ? $data['owner']: null;
-        $this->grave = isset($data['grave']) ? $data['grave']: null;
+        $this->adjudicationYear = $data['adjudicationYear'] ?? null;
+        $this->expiryYear = $data['expiryYear'] ?? null;
+        $this->note = $data['note'] ?? null;
+        $this->registrationNumber = $data['registrationNumber'] ?? null;
+        $this->owner = $data['owner'] ?? null;
+        $this->grave = $data['grave'] ?? null;
 
         return $this;
     }

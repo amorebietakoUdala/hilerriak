@@ -7,39 +7,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=GraveTypeRepository::class)
- */
-class GraveType
+#[ORM\Entity(repositoryClass: GraveTypeRepository::class)]
+class GraveType implements \Stringable
 {
-    const OCUPATION = 1;
-    const REST = 2;
-    const PANTEON = 3;
-    const ASHES = 4;
-    const PIT = 5;
-    const SLAB = 6;
+    final public const OCUPATION = 1;
+    final public const REST = 2;
+    final public const PANTEON = 3;
+    final public const ASHES = 4;
+    final public const PIT = 5;
+    final public const SLAB = 6;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEs;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEs = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $descriptionEu;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionEu = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Grave::class, mappedBy="type")
-     */
-    private $graves;
+    #[ORM\OneToMany(targetEntity: Grave::class, mappedBy: 'type')]
+    private Collection|array $graves;
 
     public function __construct()
     {
@@ -118,9 +108,9 @@ class GraveType
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->descriptionEs;
+        return (string) $this->descriptionEs;
     }
 
     public function getDescription($locale): string {

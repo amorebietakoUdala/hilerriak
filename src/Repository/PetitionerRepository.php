@@ -78,15 +78,6 @@ class PetitionerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        
+
     }
-//    public function findOneBySomeField($value): ?Petitioner
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

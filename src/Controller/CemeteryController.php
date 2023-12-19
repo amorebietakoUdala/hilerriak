@@ -13,32 +13,23 @@ use App\Repository\CemeteryRepository;
 use App\Repository\GraveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/** 
-* @IsGranted("ROLE_TECHNICAL_OFFICE")
-*/
+#[IsGranted('ROLE_TECHNICAL_OFFICE')]
 class CemeteryController extends BaseController
 {
 
-    private CemeteryRepository $repo;
-    private EntityManagerInterface $em;
-    private GraveRepository $graveRepo;
-    private TranslatorInterface $translator;
-
-    public function __construct(CemeteryRepository $repo, GraveRepository $graveRepo, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(
+        private readonly CemeteryRepository $repo, 
+        private readonly GraveRepository $graveRepo, 
+        private readonly EntityManagerInterface $em, 
+        private readonly TranslatorInterface $translator)
     {
-        $this->repo = $repo;
-        $this->graveRepo = $graveRepo;
-        $this->em = $em;
-        $this->translator = $translator;
     }
 
-    /**
-     * @Route("/{_locale}/admin/cemetery/new", name="cemetery_new")
-     */
+    #[Route(path: '/{_locale}/admin/cemetery/new', name: 'cemetery_new')]
     public function new(Request $request): Response 
     {
         $this->loadQueryParameters($request);
@@ -59,7 +50,7 @@ class CemeteryController extends BaseController
                     'form' => $form,
                     'new' => true,
                     'readonly' => false,
-                ], new Response(null, 422));        
+                ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY));        
             } else {
                 $cemetery = $data;
             }
@@ -75,9 +66,7 @@ class CemeteryController extends BaseController
         ],  new Response(null, $form->isSubmitted() && ( !$form->isValid() )? 422 : 200));        
     }
 
-    /**
-     * @Route("/{_locale}/admin/cemetery/{cemetery}", name="cemetery_show")
-     */
+    #[Route(path: '/{_locale}/admin/cemetery/{cemetery}', name: 'cemetery_show')]
     public function show(Cemetery $cemetery, Request $request): Response 
     {
         $form = $this->createForm(CemeteryFormType::class, $cemetery, [
@@ -92,9 +81,7 @@ class CemeteryController extends BaseController
       ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200,));
     }
 
-    /**
-     * @Route("/{_locale}/admin/cemetery/{cemetery}/edit", name="cemetery_edit")
-     */
+    #[Route(path: '/{_locale}/admin/cemetery/{cemetery}/edit', name: 'cemetery_edit')]
     public function edit(Cemetery $cemetery, Request $request): Response 
     {
         $form = $this->createForm(CemeteryFormType::class, $cemetery, [
@@ -109,13 +96,11 @@ class CemeteryController extends BaseController
       ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200,));
     }
 
-    /**
-     * @Route("/{_locale}/admin/cemetery/{cemetery}/delete", name="cemetery_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{_locale}/admin/cemetery/{cemetery}/delete', name: 'cemetery_delete', methods: ['DELETE'])]
     public function delete(Cemetery $cemetery, Request $request): Response 
     {
-        if ($this->checkRemovable($cemetery->getGraves())) {
-            return new Response($this->translator->trans('messages.cemeteryHasGraves'), 422);
+        if (!$this->checkRemovable($cemetery->getGraves())) {
+            return new Response($this->translator->trans('messages.cemeteryHasGraves'), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if ($this->isCsrfTokenValid('delete'.$cemetery->getId(), $request->get('_token'))) {
@@ -124,17 +109,15 @@ class CemeteryController extends BaseController
             if (!$request->isXmlHttpRequest() && !$this->getAjax()) {
                 return $this->redirectToRoute('cemetery_index');
             } else {
-                return new Response(null, 204);
+                return new Response(null, Response::HTTP_NO_CONTENT);
             }
         } else {
-            return new Response('messages.invalidCsrfToken', 422);
+            return new Response('messages.invalidCsrfToken', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
-    /**
-     * @Route("/{_locale}/cemetery/{cemetery}/new/zone", name="cemetery_new_zone")
-     * @IsGranted("ROLE_UNDERTAKER")
-     */
+    #[Route(path: '/{_locale}/cemetery/{cemetery}/new/zone', name: 'cemetery_new_zone')]
+    #[IsGranted('ROLE_UNDERTAKER')]
     public function newZone(Cemetery $cemetery, Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -145,8 +128,8 @@ class CemeteryController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $type = $data['type'];
-            $letter = strtoupper($data['letter']);
-            $zone = strtoupper($data['zone']);
+            $letter = strtoupper((string) $data['letter']);
+            $zone = strtoupper((string) $data['zone']);
             if ($type->getId() === GraveType::PANTEON) {
                 if ($zone === null) {
                     $this->addFlash('error', 'messages.zoneRequiredOnPantheons');
@@ -187,9 +170,7 @@ class CemeteryController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/admin/cemetery", name="cemetery_index")
-     */
+    #[Route(path: '/{_locale}/admin/cemetery', name: 'cemetery_index')]
     public function index(Request $request): Response
     {
         $this->loadQueryParameters($request);
@@ -199,7 +180,7 @@ class CemeteryController extends BaseController
         $template = !$this->getAjax() ? 'cemetery/index.html.twig' : 'cemetery/_list.html.twig';
         return $this->render($template, [
             'cemeterys' => $cemeterys,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);        
     }
 
@@ -217,7 +198,7 @@ class CemeteryController extends BaseController
         $graves = [];
         $rows = $data['high'];
         $columns = $data['width'];
-        $letter = strtoupper($data['letter']);
+        $letter = strtoupper((string) $data['letter']);
         $zone = $data['zone'];
         $years = $data['years'];
         /** @var GraveType $type */
@@ -272,7 +253,11 @@ class CemeteryController extends BaseController
         return false;
     }
 
-    private function checkRemovable($graves) {
+    /**
+     * If cemetery has graves it can't be deleted
+     * @return bool
+     */
+    private function checkRemovable($graves): bool {
         return !$this->hasElements($graves);
     }
 }

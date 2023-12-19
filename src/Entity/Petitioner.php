@@ -6,27 +6,20 @@ use App\Repository\PetitionerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=PetitionerRepository::class)
- */
+#[ORM\Entity(repositoryClass: PetitionerRepository::class)]
 class Petitioner extends Person
 {
 //    use TimestampableEntity;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"api_person"})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['api_person'])]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Movement::class, mappedBy="petitioner")
-     */
-    private $movements;
+    #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'petitioner')]
+    private Collection|array $movements;
 
     public function __construct()
     {

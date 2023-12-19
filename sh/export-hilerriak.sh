@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MOUNTPATH=/media/hilerriak
-SCPATH=/var/www/SF5/hilerriak/sh
+SCPATH=/var/www/SF6/hilerriak/sh
 # mount -l "$MOUNTPATH"
 
 cd "$SCPATH"

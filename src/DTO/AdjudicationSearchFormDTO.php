@@ -53,10 +53,10 @@ class AdjudicationSearchFormDTO
    public static function fill(array $criteria) : self 
    {
       $filter = new AdjudicationSearchFormDTO();
-      $cemetery = isset($criteria['cemetery']) ? $criteria['cemetery'] : null; 
-      $owner = isset($criteria['owner']) ? $criteria['owner'] : null; 
-      $grave = isset($criteria['grave']) ? $criteria['grave'] : null; 
-      $expired = isset($criteria['expired']) ? $criteria['expired'] : null; 
+      $cemetery = $criteria['cemetery'] ?? null; 
+      $owner = $criteria['owner'] ?? null; 
+      $grave = $criteria['grave'] ?? null; 
+      $expired = $criteria['expired'] ?? null; 
       $filter->setCemetery($cemetery);
       $filter->setOwner($owner);
       $filter->setGrave($grave);

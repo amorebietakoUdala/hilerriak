@@ -24,8 +24,12 @@ class BaseController extends AbstractController
             $this->queryParams['returnUrl'] = null;
             $this->queryParams = array_merge($this->queryParams, $request->query->all());
             if ( $this->queryParams !== null ) {
-                $query = parse_url($this->queryParams['returnUrl'], PHP_URL_QUERY);
-                parse_str($query,$query);
+                $query = parse_url((string) $this->queryParams['returnUrl'], PHP_URL_QUERY);
+                if ( $query === null) {
+                    $query = [];
+                } else {
+                    parse_str($query,$query);
+                }
                 $this->queryParams = array_merge($this->queryParams, $query);
             }
         }
@@ -52,7 +56,7 @@ class BaseController extends AbstractController
     protected function renderForm(string $view, array $parameters = [], Response $response = null): Response {
         $paginationParameters = $this->getPaginationParameters();
         $viewParameters = array_merge($parameters, $paginationParameters);
-        return parent::renderForm($view, $viewParameters, $response);
+        return parent::render($view, $viewParameters, $response);
     }
 
     protected function redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse {

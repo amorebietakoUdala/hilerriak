@@ -6,106 +6,68 @@ use App\Repository\MovementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass=MovementRepository::class)
- */
+#[ORM\Entity(repositoryClass: MovementRepository::class)]
 class Movement
 {
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MovementType::class, inversedBy="movements")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $type;
+    #[ORM\ManyToOne(targetEntity: MovementType::class, inversedBy: 'movements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MovementType $type = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Grave::class, inversedBy="sourceMovements")
-     */
-    private $source;
+    #[ORM\ManyToOne(targetEntity: Grave::class, inversedBy: 'sourceMovements')]
+    private ?Grave $source = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=DestinationType::class, inversedBy="movements")
-     */
-    private $destinationType;
+    #[ORM\ManyToOne(targetEntity: DestinationType::class, inversedBy: 'movements')]
+    private ?DestinationType $destinationType = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Grave::class, inversedBy="destinationMovements")
-     */
-    private $destination;
+    #[ORM\ManyToOne(targetEntity: Grave::class, inversedBy: 'destinationMovements')]
+    private ?Grave $destination = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $registrationNumber;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $registrationNumber = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $year;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $year = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $defunctName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $defunctSurname1;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $defunctSurname2;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $defunctFullname;
 
-    /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
-     */
-    private $note;
+    #[ORM\Column(type: 'string', length: 1024, nullable: true)]
+    private ?string $note = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $finalized;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $finalized = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $deceaseDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $deceaseDate = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $movementEndDate;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $wantsToBePresent;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $wantsToBePresent = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $relationship;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $relationship = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Petitioner::class, inversedBy="movements", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $petitioner;
+    #[ORM\ManyToOne(targetEntity: Petitioner::class, inversedBy: 'movements', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Petitioner $petitioner = null;
 
     public function getId(): ?int
     {
